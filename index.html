@@ -16,9 +16,51 @@
       color: white;
     }
 
+    /* Top Navigation Bar */
+    nav {
+      position: sticky;
+      top: 0;
+      width: 100%;
+      background: #12121a;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 30px;
+      border-bottom: 1px solid #1f1f2e;
+      z-index: 1000;
+    }
+
+    nav h2 {
+      margin: 0;
+      color: #7df9ff;
+    }
+
+    nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      gap: 25px;
+    }
+
+    nav ul li {
+      display: inline;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: white;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    nav ul li a:hover {
+      color: #7df9ff;
+    }
+
     header {
       text-align: center;
-      padding: 100px 20px;
+      padding: 100px 20px 60px;
       background: radial-gradient(circle, #1a1a2e, #0a0a0f);
     }
 
@@ -87,23 +129,33 @@
     .cta a:hover {
       background: #5fd3d8;
     }
-
   </style>
 </head>
 
 <body>
+
+<!-- Top Navigation Bar -->
+<nav>
+  <h2>VoxeliaForge</h2>
+  <ul>
+    <li><a href="#what">What is it?</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#vision">Vision</a></li>
+    <li><a href="#cta">Join</a></li>
+  </ul>
+</nav>
 
 <header>
   <h1>VoxeliaForge Prototype</h1>
   <p class="tagline">Forge Your World.</p>
   <p class="tagline">Chat. Create. Build with AI.</p>
 
-  <div class="cta">
+  <div class="cta" id="cta">
     <a href="#">Coming Soon</a>
   </div>
 </header>
 
-<section>
+<section id="what">
   <h2>What is VoxeliaForge?</h2>
   <p>
     VoxeliaForge is a next-generation platform where you can chat with friends,
@@ -111,11 +163,10 @@
   </p>
 </section>
 
-<section>
+<section id="features">
   <h2>Prototype Features</h2>
 
   <div class="features">
-
     <div class="card">
       <h3>🤖 AI Bots</h3>
       <p>Interact with simple AI bots (demo purposes).</p>
@@ -130,11 +181,10 @@
       <h3>👥 Friends System</h3>
       <p>Preview the friend and chat system.</p>
     </div>
-
   </div>
 </section>
 
-<section>
+<section id="vision">
   <h2>Our Vision</h2>
   <p>
     VoxeliaForge isn’t just a chat app. It’s a platform where communities become worlds.
