@@ -5,303 +5,106 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>VoxeliaForge - Your Digital Playground</title>
 <style>
-    body {
-        margin: 0;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-        color: #fff;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
+    /* Reset & body */
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg,#0f2027,#203a43,#2c5364); color:#fff; }
 
-    header {
+    /* Top Navigation Bar */
+    nav {
         width: 100%;
-        text-align: center;
-        padding: 25px;
-        background: rgba(0,0,0,0.3);
+        background: rgba(0,0,0,0.7);
         backdrop-filter: blur(6px);
-        box-shadow: 0 0 20px #00f0ff;
-    }
-
-    header h1 {
-        font-size: 2.5rem;
-        margin: 0;
-        color: #00f0ff;
-        text-shadow: 0 0 10px #00f0ff;
-    }
-
-    header p {
-        margin: 5px 0 0 0;
-        font-size: 1.1rem;
-        color: #ff00f0;
-        text-shadow: 0 0 8px #ff00f0;
-    }
-
-    main {
-        display: flex;
-        flex-direction: row;
-        margin-top: 20px;
-        width: 90%;
-        max-width: 1000px;
-        gap: 20px;
-    }
-
-    #chat-container {
-        flex: 3;
-        display: flex;
-        flex-direction: column;
-    }
-
-    #chat {
-        flex: 1;
-        height: 500px;
-        border: 2px solid #00f0ff;
-        border-radius: 12px;
-        padding: 15px;
-        overflow-y: auto;
-        background: rgba(0, 0, 0, 0.5);
-    }
-
-    #chat p {
-        margin: 6px 0;
-        padding: 5px 10px;
-        border-radius: 8px;
-    }
-
-    .system {
-        color: #ffea00;
-        font-style: italic;
-        background: rgba(255, 234, 0, 0.1);
-    }
-
-    .user {
-        color: #00f0ff;
-        background: rgba(0, 240, 255, 0.1);
-    }
-
-    .other {
-        color: #ff00f0;
-        background: rgba(255, 0, 240, 0.1);
-    }
-
-    #message-input-container {
-        display: flex;
-        margin-top: 10px;
-    }
-
-    #messageInput {
-        flex: 1;
-        padding: 10px;
-        border-radius: 6px;
-        border: none;
-        outline: none;
-        font-size: 1rem;
-    }
-
-    #sendBtn {
-        padding: 10px 20px;
-        margin-left: 5px;
-        border: none;
-        border-radius: 6px;
-        background-color: #00f0ff;
-        color: #000;
-        cursor: pointer;
-        font-weight: bold;
-    }
-
-    #sendBtn:hover {
-        opacity: 0.8;
-    }
-
-    #users {
-        flex: 1;
-        border: 2px solid #ff00f0;
-        border-radius: 12px;
-        padding: 10px;
-        background: rgba(0,0,0,0.5);
-        height: 500px;
-        overflow-y: auto;
-    }
-
-    #users h2 {
-        text-align: center;
-        color: #ff00f0;
-        margin-top: 0;
-        text-shadow: 0 0 8px #ff00f0;
-    }
-
-    #users ul {
-        list-style: none;
-        padding-left: 0;
-    }
-
-    #users li {
-        padding: 5px 0;
-        text-align: center;
-        border-bottom: 1px solid rgba(255,255,255,0.1);
-    }
-
-    #downloadBtn {
-        margin-top: 20px;
-        padding: 15px 40px;
-        font-size: 1.1rem;
-        border: none;
-        border-radius: 12px;
-        background-color: #ff00f0;
-        color: #fff;
-        cursor: pointer;
-        text-decoration: none;
-        text-align: center;
-        box-shadow: 0 0 20px #ff00f0;
-        transition: 0.3s;
-    }
-
-    #downloadBtn:hover {
-        transform: scale(1.05);
-        opacity: 0.9;
-    }
-
-    /* Username overlay */
-    #usernameOverlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0,0,0,0.85);
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
+        padding: 15px 30px;
+        display:flex;
+        justify-content: space-between;
         align-items: center;
-        z-index: 999;
+        position: fixed;
+        top:0;
+        left:0;
+        z-index: 1000;
+        box-shadow: 0 0 10px #00f0ff;
     }
+    nav h1 { color:#00f0ff; text-shadow:0 0 8px #00f0ff; font-size:1.8rem; }
+    nav ul { display:flex; list-style:none; gap:20px; }
+    nav ul li { cursor:pointer; }
+    nav ul li a { text-decoration:none; color:#fff; font-weight:bold; transition:0.3s; }
+    nav ul li a:hover { color:#00f0ff; }
 
-    #usernameOverlay input {
-        padding: 12px;
-        font-size: 1rem;
-        border-radius: 6px;
-        border: none;
-        margin-top: 10px;
+    /* Main Content */
+    main { padding:120px 20px 50px 20px; display:flex; flex-direction:column; align-items:center; gap:40px; }
+
+    section {
+        max-width:900px;
+        width:100%;
+        background: rgba(0,0,0,0.5);
+        border-radius:15px;
+        padding:30px;
+        box-shadow:0 0 20px rgba(0,240,255,0.3);
+        text-align:center;
     }
+    section h2 { font-size:2rem; margin-bottom:15px; color:#00f0ff; text-shadow:0 0 8px #00f0ff; }
+    section p { font-size:1.1rem; line-height:1.6; color:#fff; }
 
-    #usernameOverlay button {
-        padding: 12px 20px;
-        font-size: 1rem;
-        border-radius: 6px;
-        border: none;
-        background: #00f0ff;
-        color: #000;
-        margin-top: 10px;
-        cursor: pointer;
+    /* Download Button */
+    .download-btn {
+        margin-top:20px;
+        padding:15px 40px;
+        font-size:1.1rem;
+        border:none;
+        border-radius:12px;
+        background-color:#ff00f0;
+        color:#fff;
+        cursor:pointer;
+        text-decoration:none;
+        text-align:center;
+        box-shadow:0 0 20px #ff00f0;
+        transition:0.3s;
     }
+    .download-btn:hover { transform:scale(1.05); opacity:0.9; }
 
-    #usernameOverlay button:hover {
-        opacity: 0.8;
+    /* Responsive */
+    @media(max-width:768px){
+        nav ul { flex-direction: column; gap:10px; margin-top:10px; }
+        section { padding:20px; }
+        nav { padding:15px 20px; }
     }
 </style>
 </head>
 <body>
 
-<header>
+<!-- Navigation Bar -->
+<nav>
     <h1>VoxeliaForge</h1>
-    <p>Your Digital Playground</p>
-</header>
+    <ul>
+        <li><a href="#about">About</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#download">Download</a></li>
+    </ul>
+</nav>
 
 <main>
-    <div id="chat-container">
-        <div id="chat">
-            <p class="system"><strong>System:</strong> Welcome to VoxeliaForge chat!</p>
-        </div>
-        <div id="message-input-container">
-            <input type="text" id="messageInput" placeholder="Type a message..." disabled>
-            <button id="sendBtn" disabled>Send</button>
-        </div>
-        <a href="#" id="downloadBtn">Download VoxeliaForge</a>
-    </div>
+    <!-- About Section -->
+    <section id="about">
+        <h2>About VoxeliaForge</h2>
+        <p>VoxeliaForge is your digital playground where you can explore worlds, chat with friends, and enjoy a futuristic experience on both PC and mobile devices. Join a growing community and unleash your creativity!</p>
+    </section>
 
-    <div id="users">
-        <h2>Online Users</h2>
-        <ul id="usersList">
-        </ul>
-    </div>
+    <!-- Features Section -->
+    <section id="features">
+        <h2>Features</h2>
+        <p>• Cross-platform support for PC and mobile.<br>
+           • Chat and social features.<br>
+           • Futuristic, interactive worlds.<br>
+           • Download and play instantly.</p>
+    </section>
+
+    <!-- Download Section -->
+    <section id="download">
+        <h2>Download VoxeliaForge</h2>
+        <p>Get VoxeliaForge today and start exploring! Works perfectly on both mobile and PC devices.</p>
+        <a href="#" class="download-btn">Download Now</a>
+    </section>
 </main>
-
-<div id="usernameOverlay">
-    <h2>Enter your username</h2>
-    <input type="text" id="usernameInput" placeholder="Your username">
-    <button id="setUsernameBtn">Join Chat</button>
-</div>
-
-<script>
-    const chat = document.getElementById('chat');
-    const input = document.getElementById('messageInput');
-    const sendBtn = document.getElementById('sendBtn');
-    const usersList = document.getElementById('usersList');
-
-    let username = '';
-    const onlineUsers = [];
-
-    const overlay = document.getElementById('usernameOverlay');
-    const usernameInput = document.getElementById('usernameInput');
-    const setUsernameBtn = document.getElementById('setUsernameBtn');
-
-    setUsernameBtn.addEventListener('click', () => {
-        const name = usernameInput.value.trim();
-        if(name) {
-            username = name;
-            onlineUsers.push(username);
-            updateUsersList();
-            overlay.style.display = 'none';
-            input.disabled = false;
-            sendBtn.disabled = false;
-            addMessage(`You joined the chat!`, 'system');
-        }
-    });
-
-    usernameInput.addEventListener('keypress', (e) => {
-        if(e.key === 'Enter') setUsernameBtn.click();
-    });
-
-    function addMessage(text, type='user') {
-        const p = document.createElement('p');
-        p.className = type;
-        if(type === 'user') {
-            p.innerHTML = `<strong>${username}:</strong> ${text}`;
-        } else if(type === 'other') {
-            p.innerHTML = `<strong>Other:</strong> ${text}`;
-        } else {
-            p.innerHTML = `<strong>System:</strong> ${text}`;
-        }
-        chat.appendChild(p);
-        chat.scrollTop = chat.scrollHeight;
-    }
-
-    function updateUsersList() {
-        usersList.innerHTML = '';
-        onlineUsers.forEach(u => {
-            const li = document.createElement('li');
-            li.textContent = u;
-            usersList.appendChild(li);
-        });
-    }
-
-    sendBtn.addEventListener('click', () => {
-        const message = input.value.trim();
-        if(message) {
-            addMessage(message, 'user');
-            input.value = '';
-            // Example auto-response
-            setTimeout(() => {
-                addMessage("This is a sample other user message", 'other');
-            }, 800);
-        }
-    });
-
-    input.addEventListener('keypress', (e) => {
-        if(e.key === 'Enter') sendBtn.click();
-    });
-</script>
 
 </body>
 </html>
