@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>VoxeliaForge Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Orbitron', sans-serif;
+      background: #0a0a0f;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .login-container {
+      background: #12121a;
+      padding: 40px;
+      border-radius: 20px;
+      width: 350px;
+      box-shadow: 0 0 20px #7df9ff44;
+      border: 1px solid #1f1f2e;
+    }
+
+    h1 {
+      text-align: center;
+      color: #7df9ff;
+      margin-bottom: 20px;
+      text-shadow: 0 0 15px #7df9ff;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    input {
+      padding: 10px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      border: 1px solid #1f1f2e;
+      background: #0a0a0f;
+      color: white;
+    }
+
+    input:focus {
+      outline: none;
+      border: 1px solid #7df9ff;
+      box-shadow: 0 0 10px #7df9ff33;
+    }
+
+    button {
+      padding: 12px;
+      border-radius: 20px;
+      border: none;
+      background: #7df9ff;
+      color: black;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #5fd3d8;
+    }
+
+    .signup-link {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 0.9em;
+    }
+
+    .signup-link a {
+      color: #7df9ff;
+      text-decoration: none;
+    }
+
+    .signup-link a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-container">
+    <h1>Login</h1>
+    <form>
+      <label for="username">Username or Email</label>
+      <input type="text" id="username" placeholder="Enter your username or email" required>
+
+      <label for="password">Password</label>
+      <input type="password" id="password" placeholder="Enter your password" required>
+
+      <button type="submit">Login</button>
+    </form>
+
+    <div class="signup-link">
+      Don't have an account? <a href="signup.html">Sign Up</a>
+    </div>
+  </div>
+
+</body>
+</html>
