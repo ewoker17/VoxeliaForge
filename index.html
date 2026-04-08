@@ -9,6 +9,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap" rel="stylesheet">
 
   <style>
+    /* --- General --- */
+    html {
+      scroll-padding-top: 80px; /* Fix sticky nav overlap */
+    }
     body {
       margin: 0;
       font-family: 'Orbitron', sans-serif;
@@ -16,7 +20,7 @@
       color: white;
     }
 
-    /* Top Navigation Bar */
+    /* --- Top Navigation Bar --- */
     nav {
       position: sticky;
       top: 0;
@@ -44,7 +48,7 @@
     }
 
     nav ul li {
-      display: inline;
+      position: relative; /* for dropdown */
     }
 
     nav ul li a {
@@ -58,6 +62,35 @@
       color: #7df9ff;
     }
 
+    /* --- Dropdown --- */
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      top: 35px;
+      left: 0;
+      background: #1a1a2e;
+      min-width: 150px;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 0 10px #000;
+    }
+
+    .dropdown-content a {
+      display: block;
+      padding: 10px 15px;
+      color: white;
+    }
+
+    .dropdown-content a:hover {
+      background: #7df9ff33;
+      color: #7df9ff;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    /* --- Header --- */
     header {
       text-align: center;
       padding: 100px 20px 60px;
@@ -77,11 +110,12 @@
     }
 
     section {
-      padding: 60px 20px;
+      padding: 100px 20px 60px;
       max-width: 1000px;
       margin: auto;
     }
 
+    /* --- Features Cards --- */
     .features {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -105,12 +139,7 @@
       color: #7df9ff;
     }
 
-    footer {
-      text-align: center;
-      padding: 40px;
-      color: #777;
-    }
-
+    /* --- Call to Action --- */
     .cta {
       text-align: center;
       margin-top: 30px;
@@ -129,9 +158,15 @@
     .cta a:hover {
       background: #5fd3d8;
     }
+
+    /* --- Footer --- */
+    footer {
+      text-align: center;
+      padding: 40px;
+      color: #777;
+    }
   </style>
 </head>
-
 <body>
 
 <!-- Top Navigation Bar -->
@@ -141,6 +176,14 @@
     <li><a href="#what">What is it?</a></li>
     <li><a href="#features">Features</a></li>
     <li><a href="#vision">Vision</a></li>
+    <li class="dropdown">
+      <a href="#">More ▼</a>
+      <div class="dropdown-content">
+        <a href="#">Roadmap</a>
+        <a href="#">Team</a>
+        <a href="#">Contact</a>
+      </div>
+    </li>
     <li><a href="#cta">Join</a></li>
   </ul>
 </nav>
@@ -198,3 +241,5 @@
 
 </body>
 </html>
+
+
