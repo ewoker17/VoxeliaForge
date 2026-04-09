@@ -1,167 +1,246 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>VoxeliaForge Prototype</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>VoxeliaForge</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap" rel="stylesheet">
 
-  <style>
-    html { scroll-padding-top: 80px; }
+<style>
+html { scroll-padding-top: 80px; }
 
-    body {
-      margin: 0;
-      font-family: 'Orbitron', sans-serif;
-      background: #0a0a0f;
-      color: white;
-    }
+body {
+  margin: 0;
+  font-family: 'Orbitron', sans-serif;
+  background: #0a0a0f;
+  color: white;
+}
 
-    /* NAV */
-    nav {
-      position: sticky;
-      top: 0;
-      width: 100%;
-      background: #12121a;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 15px 20px;
-      border-bottom: 1px solid #1f1f2e;
-      z-index: 1000;
-    }
+/* ================= LOADER ================= */
+#loader {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: #05050a;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  z-index: 9999;
+  transition: opacity 0.5s ease;
+}
 
-    nav h2 {
-      margin: 0;
-      color: #7df9ff;
-      font-size: 1.2em;
-    }
+/* GRID */
+.grid {
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  background-image: linear-gradient(#111 1px, transparent 1px),
+                    linear-gradient(90deg, #111 1px, transparent 1px);
+  background-size: 40px 40px;
+  transform: rotateX(60deg);
+  animation: moveGrid 6s linear infinite;
+  opacity: 0.2;
+}
 
-    nav ul {
-      list-style: none;
-      display: flex;
-      gap: 15px;
-      margin: 0;
-      padding: 0;
-      align-items: center;
-      flex-wrap: wrap;
-    }
+@keyframes moveGrid {
+  from { transform: rotateX(60deg) translateY(0); }
+  to { transform: rotateX(60deg) translateY(40px); }
+}
 
-    nav a {
-      color: white;
-      text-decoration: none;
-      font-weight: bold;
-      font-size: 0.9em;
-    }
+/* CORE */
+.core {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #7df9ff, #0ff, transparent);
+  box-shadow: 0 0 40px #7df9ff, 0 0 100px #0ff;
+  animation: pulse 1.8s infinite;
+  margin-bottom: 25px;
+}
 
-    nav a:hover { color: #7df9ff; }
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
 
-    /* DROPDOWN */
-    .dropdown-content {
-      display: none;
-      position: absolute;
-      top: 35px;
-      background: #1a1a2e;
-      border-radius: 8px;
-      overflow: hidden;
-      min-width: 150px;
-    }
+/* LOADER TEXT */
+.title {
+  color: #7df9ff;
+  text-shadow: 0 0 20px #7df9ff;
+}
 
-    .dropdown-content a {
-      display: block;
-      padding: 10px;
-    }
+.status {
+  color: #aaa;
+  margin-bottom: 20px;
+}
 
-    .show { display: block; }
+/* BAR */
+.bar {
+  width: 260px;
+  height: 8px;
+  background: #111;
+  border-radius: 10px;
+  overflow: hidden;
+}
 
-    /* SIGNUP */
-    .signup-btn a {
-      background: #7df9ff;
-      color: black;
-      padding: 6px 12px;
-      border-radius: 20px;
-    }
+.fill {
+  width: 0%;
+  height: 100%;
+  background: #7df9ff;
+  animation: load 5s forwards;
+}
 
-    /* HEADER */
-    header {
-      text-align: center;
-      padding: 80px 20px;
-    }
+@keyframes load {
+  from { width: 0%; }
+  to { width: 100%; }
+}
 
-    h1 {
-      font-size: 2.2em;
-      color: #7df9ff;
-      text-shadow: 0 0 20px #7df9ff;
-    }
+/* ================= NAV ================= */
+nav {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  background: #12121a;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid #1f1f2e;
+  z-index: 1000;
+}
 
-    .tagline {
-      font-size: 1em;
-      color: #aaa;
-    }
+nav h2 {
+  margin: 0;
+  color: #7df9ff;
+}
 
-    /* DOWNLOAD BUTTON */
-    .download-btn {
-      margin-top: 20px;
-    }
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 15px;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+}
 
-    .download-btn a {
-      background: #7df9ff;
-      color: black;
-      padding: 10px 20px;
-      border-radius: 25px;
-      text-decoration: none;
-      font-weight: bold;
-    }
+nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
 
-    /* SECTIONS */
-    section {
-      padding: 60px 20px;
-      max-width: 900px;
-      margin: auto;
-    }
+nav a:hover { color: #7df9ff; }
 
-    .features {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 15px;
-    }
+/* DROPDOWN */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: 35px;
+  background: #1a1a2e;
+  border-radius: 8px;
+  min-width: 150px;
+}
 
-    .card {
-      background: #12121a;
-      padding: 15px;
-      border-radius: 12px;
-    }
+.dropdown-content a {
+  display: block;
+  padding: 10px;
+}
 
-    footer {
-      text-align: center;
-      padding: 20px;
-      font-size: 0.8em;
-    }
+.show { display: block; }
 
-    /* DESKTOP IMPROVEMENTS */
-    @media (min-width: 700px) {
-      h1 { font-size: 3em; }
+/* SIGN UP */
+.signup-btn a {
+  background: #7df9ff;
+  color: black;
+  padding: 6px 12px;
+  border-radius: 20px;
+}
 
-      .features {
-        grid-template-columns: repeat(3, 1fr);
-      }
+/* ================= HEADER ================= */
+header {
+  text-align: center;
+  padding: 80px 20px;
+}
 
-      nav ul {
-        flex-wrap: nowrap;
-      }
-    }
-  </style>
+h1 {
+  font-size: 2.5em;
+  color: #7df9ff;
+  text-shadow: 0 0 20px #7df9ff;
+}
+
+.tagline {
+  color: #aaa;
+}
+
+/* DOWNLOAD */
+.download-btn {
+  margin-top: 20px;
+}
+
+.download-btn a {
+  background: #7df9ff;
+  color: black;
+  padding: 10px 20px;
+  border-radius: 25px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* ================= CONTENT ================= */
+section {
+  padding: 60px 20px;
+  max-width: 900px;
+  margin: auto;
+}
+
+.features {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 15px;
+}
+
+.card {
+  background: #12121a;
+  padding: 15px;
+  border-radius: 12px;
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+}
+
+/* DESKTOP */
+@media (min-width: 700px) {
+  .features {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+</style>
 </head>
 
 <body>
 
+<!-- LOADER -->
+<div id="loader">
+  <div class="grid"></div>
+  <div class="core"></div>
+  <h1 class="title">VoxeliaForge</h1>
+  <p class="status" id="statusText">Booting Systems...</p>
+  <div class="bar"><div class="fill"></div></div>
+</div>
+
+<!-- NAV -->
 <nav>
   <h2>VoxeliaForge</h2>
   <ul>
     <li><a href="#what">What</a></li>
     <li><a href="#features">Features</a></li>
     <li><a href="#vision">Vision</a></li>
-
     <li>
       <a onclick="toggleDropdown()">More ▼</a>
       <div class="dropdown-content" id="dropdown">
@@ -170,20 +249,20 @@
         <a href="login.html">Login</a>
       </div>
     </li>
-
     <li class="signup-btn"><a href="signup.html">Sign Up</a></li>
   </ul>
 </nav>
 
+<!-- HEADER -->
 <header>
   <h1>VoxeliaForge</h1>
   <p class="tagline">Forge Your World.</p>
-
   <div class="download-btn">
     <a href="#">Download</a>
   </div>
 </header>
 
+<!-- CONTENT -->
 <section id="what">
   <h2>What is VoxeliaForge?</h2>
   <p>A platform to chat, create AI, and build worlds.</p>
@@ -211,6 +290,35 @@
 function toggleDropdown() {
   document.getElementById("dropdown").classList.toggle("show");
 }
+
+/* LOADING TEXT ROTATION */
+const messages = [
+  "Booting Systems...",
+  "Loading Modules...",
+  "Forging Interface...",
+  "Initializing AI Core...",
+  "Finalizing Build..."
+];
+
+let i = 0;
+const statusText = document.getElementById("statusText");
+
+const interval = setInterval(() => {
+  i++;
+  if (i < messages.length) {
+    statusText.textContent = messages[i];
+  }
+}, 1000);
+
+/* REMOVE LOADER */
+window.addEventListener("load", () => {
+  setTimeout(() => {
+    document.getElementById("loader").style.opacity = "0";
+    setTimeout(() => {
+      document.getElementById("loader").style.display = "none";
+    }, 500);
+  }, 5000);
+});
 </script>
 
 </body>
