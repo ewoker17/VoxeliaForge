@@ -1,325 +1,190 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
 <title>VoxeliaForge</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
-html { scroll-padding-top: 80px; }
-
 body {
   margin: 0;
-  font-family: 'Orbitron', sans-serif;
-  background: #0a0a0f;
+  font-family: Arial;
+  background: #0a0a14;
   color: white;
 }
 
-/* ================= LOADER ================= */
-#loader {
+/* 🔥 LOADING SCREEN */
+#loading {
   position: fixed;
   width: 100%;
   height: 100%;
-  background: #05050a;
+  background: black;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
-  overflow: hidden;
-  z-index: 9999;
-  transition: opacity 0.5s ease;
+  justify-content: center;
+  flex-direction: column;
+  z-index: 999;
 }
 
-/* GRID */
-.grid {
-  position: absolute;
-  width: 200%;
-  height: 200%;
-  background-image: linear-gradient(#111 1px, transparent 1px),
-                    linear-gradient(90deg, #111 1px, transparent 1px);
-  background-size: 40px 40px;
-  transform: rotateX(60deg);
-  animation: moveGrid 6s linear infinite;
-  opacity: 0.2;
-}
-
-@keyframes moveGrid {
-  from { transform: rotateX(60deg) translateY(0); }
-  to { transform: rotateX(60deg) translateY(40px); }
-}
-
-/* CORE */
-.core {
-  width: 130px;
-  height: 130px;
+.loader {
+  border: 5px solid #222;
+  border-top: 5px solid cyan;
   border-radius: 50%;
-  background: radial-gradient(circle, #7df9ff, #0ff, transparent);
-  box-shadow: 0 0 40px #7df9ff, 0 0 100px #0ff;
-  animation: pulse 1.8s infinite;
-  margin-bottom: 25px;
+  width: 60px;
+  height: 60px;
+  animation: spin 1s linear infinite;
 }
 
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.2); }
-  100% { transform: scale(1); }
+@keyframes spin {
+  100% { transform: rotate(360deg); }
 }
 
-/* LOADER TEXT */
-.title {
-  color: #7df9ff;
-  text-shadow: 0 0 20px #7df9ff;
-}
-
-.status {
-  color: #aaa;
-  margin-bottom: 20px;
-}
-
-/* BAR */
-.bar {
-  width: 260px;
-  height: 8px;
-  background: #111;
-  border-radius: 10px;
-  overflow: hidden;
-}
-
-.fill {
-  width: 0%;
-  height: 100%;
-  background: #7df9ff;
-  animation: load 5s forwards;
-}
-
-@keyframes load {
-  from { width: 0%; }
-  to { width: 100%; }
-}
-
-/* ================= NAV ================= */
-nav {
-  position: sticky;
-  top: 0;
-  width: 100%;
-  background: #12121a;
+/* TOP BAR */
+.topbar {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 15px 20px;
-  border-bottom: 1px solid #1f1f2e;
-  z-index: 1000;
+  padding: 10px;
+  background: #111;
+  border-bottom: 2px solid cyan;
 }
 
-nav h2 {
-  margin: 0;
-  color: #7df9ff;
-}
-
-nav ul {
-  list-style: none;
-  display: flex;
-  gap: 15px;
-  margin: 0;
-  padding: 0;
-  align-items: center;
-}
-
-nav a {
-  color: white;
-  text-decoration: none;
+.logo {
+  font-size: 20px;
   font-weight: bold;
+  color: cyan;
 }
 
-nav a:hover { color: #7df9ff; }
-
-/* DROPDOWN */
-.dropdown-content {
-  display: none;
-  position: absolute;
-  top: 35px;
-  background: #1a1a2e;
-  border-radius: 8px;
-  min-width: 150px;
+.tabs button {
+  background: none;
+  border: none;
+  color: white;
+  margin: 0 10px;
+  cursor: pointer;
 }
 
-.dropdown-content a {
-  display: block;
+.tabs button:hover {
+  color: cyan;
+}
+
+/* MAIN */
+.container {
+  display: flex;
+  height: calc(100vh - 50px);
+}
+
+/* SERVERS */
+.servers {
+  width: 200px;
+  background: #141428;
   padding: 10px;
 }
 
-.show { display: block; }
-
-/* SIGN UP */
-.signup-btn a {
-  background: #7df9ff;
-  color: black;
-  padding: 6px 12px;
-  border-radius: 20px;
+.server {
+  padding: 10px;
+  margin: 5px 0;
+  background: #1f1f3d;
+  border-radius: 8px;
+  cursor: pointer;
 }
 
-/* ================= HEADER ================= */
-header {
-  text-align: center;
-  padding: 80px 20px;
+.server:hover {
+  background: #2a2a5a;
 }
 
-h1 {
-  font-size: 2.5em;
-  color: #7df9ff;
-  text-shadow: 0 0 20px #7df9ff;
+/* CHAT */
+.chat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
-.tagline {
-  color: #aaa;
+.messages {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
 }
 
-/* DOWNLOAD */
-.download-btn {
-  margin-top: 20px;
+.input {
+  display: flex;
 }
 
-.download-btn a {
-  background: #7df9ff;
-  color: black;
-  padding: 10px 20px;
-  border-radius: 25px;
-  text-decoration: none;
-  font-weight: bold;
+input {
+  flex: 1;
+  padding: 10px;
 }
 
-/* ================= CONTENT ================= */
-section {
-  padding: 60px 20px;
-  max-width: 900px;
-  margin: auto;
+button {
+  padding: 10px;
+  background: cyan;
+  border: none;
+  cursor: pointer;
 }
 
-.features {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 15px;
-}
-
-.card {
-  background: #12121a;
-  padding: 15px;
-  border-radius: 12px;
-}
-
-footer {
-  text-align: center;
+/* CHARACTER PICKER */
+.character-picker {
+  display: none;
   padding: 20px;
 }
 
-/* DESKTOP */
-@media (min-width: 700px) {
-  .features {
-    grid-template-columns: repeat(3, 1fr);
-  }
+.character {
+  background: #1f1f3d;
+  padding: 10px;
+  margin: 5px;
+  cursor: pointer;
 }
 </style>
 </head>
 
 <body>
 
-<!-- LOADER -->
-<div id="loader">
-  <div class="grid"></div>
-  <div class="core"></div>
-  <h1 class="title">VoxeliaForge</h1>
-  <p class="status" id="statusText">Booting Systems...</p>
-  <div class="bar"><div class="fill"></div></div>
+<!-- LOADING -->
+<div id="loading">
+  <h1>VoxeliaForge</h1>
+  <div class="loader"></div>
 </div>
 
-<!-- NAV -->
-<nav>
-  <h2>VoxeliaForge</h2>
-  <ul>
-    <li><a href="#what">What</a></li>
-    <li><a href="#features">Features</a></li>
-    <li><a href="#vision">Vision</a></li>
-    <li>
-      <a onclick="toggleDropdown()">More ▼</a>
-      <div class="dropdown-content" id="dropdown">
-        <a href="#">Roadmap</a>
-        <a href="#">Contact</a>
-        <a href="login.html">Login</a>
-      </div>
-    </li>
-    <li class="signup-btn"><a href="signup.html">Sign Up</a></li>
-  </ul>
-</nav>
-
-<!-- HEADER -->
-<header>
-  <h1>VoxeliaForge</h1>
-  <p class="tagline">Forge Your World.</p>
-  <div class="download-btn">
-    <a href="#">Download</a>
+<!-- TOP -->
+<div class="topbar">
+  <div class="logo">⚡ VoxeliaForge</div>
+  <div class="tabs">
+    <button onclick="showTab('chat')">Chat</button>
+    <button onclick="showTab('characters')">Characters</button>
   </div>
-</header>
+</div>
 
-<!-- CONTENT -->
-<section id="what">
-  <h2>What is VoxeliaForge?</h2>
-  <p>A platform to chat, create AI, and build worlds.</p>
-</section>
+<div class="container">
 
-<section id="features">
-  <h2>Features</h2>
-  <div class="features">
-    <div class="card">AI Bots</div>
-    <div class="card">Custom Servers</div>
-    <div class="card">Friends System</div>
+  <!-- SERVERS -->
+  <div class="servers">
+    <button onclick="createServer()">+ Create Server</button>
+    <div id="serverList"></div>
   </div>
-</section>
 
-<section id="vision">
-  <h2>Vision</h2>
-  <p>Communities become worlds.</p>
-</section>
+  <!-- CHAT -->
+  <div class="chat" id="chatTab">
+    <div class="messages" id="messages"></div>
+    <div class="input">
+      <input id="messageInput" placeholder="Message...">
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
 
-<footer>
-  <p>© VoxeliaForge</p>
-</footer>
+  <!-- CHARACTER -->
+  <div class="character-picker" id="characterTab">
+    <h2>Pick Character</h2>
+    <div class="character" onclick="pickCharacter('Nova')">Nova</div>
+    <div class="character" onclick="pickCharacter('Glitch')">Glitch</div>
+    <div class="character" onclick="pickCharacter('Flux')">Flux</div>
+  </div>
+
+</div>
+
+<!-- 🔥 FIREBASE -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js"></script>
 
 <script>
-function toggleDropdown() {
-  document.getElementById("dropdown").classList.toggle("show");
-}
-
-/* LOADING TEXT ROTATION */
-const messages = [
-  "Booting Systems...",
-  "Loading Modules...",
-  "Forging Interface...",
-  "Initializing AI Core...",
-  "Finalizing Build..."
-];
-
-let i = 0;
-const statusText = document.getElementById("statusText");
-
-const interval = setInterval(() => {
-  i++;
-  if (i < messages.length) {
-    statusText.textContent = messages[i];
-  }
-}, 1000);
-
-/* REMOVE LOADER */
-window.addEventListener("load", () => {
-  setTimeout(() => {
-    document.getElementById("loader").style.opacity = "0";
-    setTimeout(() => {
-      document.getElementById("loader").style.display = "none";
-    }, 500);
-  }, 5000);
-});
-  // Import the functions you need from the SDKs you need
+// 🔥 REPLACE WITH YOUR FIREBASE CONFIG
+// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 // TODO: Add SDKs for Firebase products that you want to use
@@ -340,6 +205,57 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+// LOADING
+setTimeout(() => {
+  document.getElementById("loading").style.display = "none";
+}, 2000);
+
+// TABS
+function showTab(tab) {
+  document.getElementById("chatTab").style.display = tab === 'chat' ? "flex" : "none";
+  document.getElementById("characterTab").style.display = tab === 'characters' ? "block" : "none";
+}
+
+// CHAT SYSTEM
+function sendMessage() {
+  let msg = document.getElementById("messageInput").value;
+  db.ref("messages").push({
+    text: msg
+  });
+  document.getElementById("messageInput").value = "";
+}
+
+db.ref("messages").on("child_added", snapshot => {
+  let msg = snapshot.val();
+  let div = document.createElement("div");
+  div.textContent = msg.text;
+  document.getElementById("messages").appendChild(div);
+});
+
+// SERVER SYSTEM
+function createServer() {
+  let name = prompt("Server name?");
+  if (!name) return;
+
+  db.ref("servers").push({ name });
+}
+
+db.ref("servers").on("child_added", snap => {
+  let server = snap.val();
+  let div = document.createElement("div");
+  div.className = "server";
+  div.textContent = server.name;
+  document.getElementById("serverList").appendChild(div);
+});
+
+// CHARACTER
+function pickCharacter(name) {
+  alert("Selected: " + name);
+}
 </script>
 
 </body>
