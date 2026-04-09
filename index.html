@@ -1,10 +1,217 @@
 <!DOCTYPE html>
-<html>    
+<html lang="en">
 <head>
-    <title>VoxeliaForge</title>
+  <meta charset="UTF-8">
+  <title>VoxeliaForge Prototype</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    html { scroll-padding-top: 80px; }
+
+    body {
+      margin: 0;
+      font-family: 'Orbitron', sans-serif;
+      background: #0a0a0f;
+      color: white;
+    }
+
+    /* NAV */
+    nav {
+      position: sticky;
+      top: 0;
+      width: 100%;
+      background: #12121a;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+      border-bottom: 1px solid #1f1f2e;
+      z-index: 1000;
+    }
+
+    nav h2 {
+      margin: 0;
+      color: #7df9ff;
+      font-size: 1.2em;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 15px;
+      margin: 0;
+      padding: 0;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 0.9em;
+    }
+
+    nav a:hover { color: #7df9ff; }
+
+    /* DROPDOWN */
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      top: 35px;
+      background: #1a1a2e;
+      border-radius: 8px;
+      overflow: hidden;
+      min-width: 150px;
+    }
+
+    .dropdown-content a {
+      display: block;
+      padding: 10px;
+    }
+
+    .show { display: block; }
+
+    /* SIGNUP */
+    .signup-btn a {
+      background: #7df9ff;
+      color: black;
+      padding: 6px 12px;
+      border-radius: 20px;
+    }
+
+    /* HEADER */
+    header {
+      text-align: center;
+      padding: 80px 20px;
+    }
+
+    h1 {
+      font-size: 2.2em;
+      color: #7df9ff;
+      text-shadow: 0 0 20px #7df9ff;
+    }
+
+    .tagline {
+      font-size: 1em;
+      color: #aaa;
+    }
+
+    /* DOWNLOAD BUTTON */
+    .download-btn {
+      margin-top: 20px;
+    }
+
+    .download-btn a {
+      background: #7df9ff;
+      color: black;
+      padding: 10px 20px;
+      border-radius: 25px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    /* SECTIONS */
+    section {
+      padding: 60px 20px;
+      max-width: 900px;
+      margin: auto;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 15px;
+    }
+
+    .card {
+      background: #12121a;
+      padding: 15px;
+      border-radius: 12px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 0.8em;
+    }
+
+    /* DESKTOP IMPROVEMENTS */
+    @media (min-width: 700px) {
+      h1 { font-size: 3em; }
+
+      .features {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      nav ul {
+        flex-wrap: nowrap;
+      }
+    }
+  </style>
 </head>
-    <body>
-        <h1>VoxeliaForge</h1>
-        <p>Welcome</p>
-    </body>
+
+<body>
+
+<nav>
+  <h2>VoxeliaForge</h2>
+  <ul>
+    <li><a href="#what">What</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#vision">Vision</a></li>
+
+    <li>
+      <a onclick="toggleDropdown()">More ▼</a>
+      <div class="dropdown-content" id="dropdown">
+        <a href="#">Roadmap</a>
+        <a href="#">Contact</a>
+        <a href="login.html">Login</a>
+      </div>
+    </li>
+
+    <li class="signup-btn"><a href="signup.html">Sign Up</a></li>
+  </ul>
+</nav>
+
+<header>
+  <h1>VoxeliaForge</h1>
+  <p class="tagline">Forge Your World.</p>
+
+  <div class="download-btn">
+    <a href="#">Download</a>
+  </div>
+</header>
+
+<section id="what">
+  <h2>What is VoxeliaForge?</h2>
+  <p>A platform to chat, create AI, and build worlds.</p>
+</section>
+
+<section id="features">
+  <h2>Features</h2>
+  <div class="features">
+    <div class="card">AI Bots</div>
+    <div class="card">Custom Servers</div>
+    <div class="card">Friends System</div>
+  </div>
+</section>
+
+<section id="vision">
+  <h2>Vision</h2>
+  <p>Communities become worlds.</p>
+</section>
+
+<footer>
+  <p>© VoxeliaForge</p>
+</footer>
+
+<script>
+function toggleDropdown() {
+  document.getElementById("dropdown").classList.toggle("show");
+}
+</script>
+
+</body>
 </html>
