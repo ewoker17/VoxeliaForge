@@ -10,19 +10,24 @@
     }
 .topbar {
   display: flex;
+  align-items: center;
   justify-content: space-between;
+  position: relative;
   padding: 10px;
   background: #111;
   border-bottom: 2px solid cyan;
 }
     .logo {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   font-size: 30px;
   font-weight: bold;
   color: cyan;
 }
     .sidebar {
   position: fixed;
-  top: 40;
+  top: 0;
   left: 0;
   width: 220px;
   height: 100vh;
