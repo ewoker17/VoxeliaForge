@@ -17,13 +17,16 @@
   background: #111;
   border-bottom: 2px solid cyan;
 }
-    .logo {
+
+/* CENTER LOGO */
+.logo {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
   font-size: 30px;
   font-weight: bold;
   color: cyan;
+  pointer-events: none; /* 🔥 prevents blocking clicks */
 }
     .sidebar {
   position: fixed;
