@@ -8,11 +8,11 @@
       --vault-black: #060608;
       --vault-dark: #0d0e12;
       --vault-panel: rgba(20, 22, 28, 0.8);
-      --neon-cyan: #00f2ff;
-      --neon-glow: rgba(0, 242, 255, 0.3);
+      --neon-cyan: #7df9ff;
+      --neon-glow: rgba(125, 249, 255, 0.3);
       --text-main: #e0e0e0;
       --text-dim: #808090;
-      --border-style: 1px solid rgba(0, 242, 255, 0.15);
+      --border-style: 1px solid rgba(125, 249, 255, 0.15);
     }
 
     body {
@@ -47,9 +47,7 @@
       cursor: pointer;
       transition: all 0.3s;
       font-weight: 900;
-      font-size: 14px;
       color: var(--text-dim);
-      text-decoration: none;
     }
 
     .nav-box:hover, .nav-box.active {
@@ -86,7 +84,7 @@
     }
 
     .menu-item:hover {
-      background: rgba(0, 242, 255, 0.05);
+      background: rgba(125, 249, 255, 0.05);
       color: white;
     }
 
@@ -108,6 +106,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      font-weight: bold;
     }
 
     .u-name { font-weight: bold; font-size: 13px; display: block; }
@@ -172,8 +171,8 @@
     }
 
     .upload-area {
-      width: 100px;
-      height: 100px;
+      width: 80px;
+      height: 80px;
       border: 1px dashed var(--neon-cyan);
       margin: 10px auto;
       display: flex;
@@ -183,7 +182,6 @@
       color: var(--text-dim);
       cursor: pointer;
       background-size: cover;
-      background-position: center;
     }
 
     input[type="text"] {
@@ -200,15 +198,14 @@
       background: #111;
       padding: 10px;
       border: 1px solid #333;
-      font-family: monospace;
       color: var(--neon-cyan);
-      margin-top: 10px;
+      font-family: monospace;
       font-size: 12px;
     }
 
     #server-list-container {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
       gap: 15px;
       margin-top: 20px;
     }
@@ -218,9 +215,10 @@
       border: 1px solid rgba(255,255,255,0.1);
       padding: 15px;
       text-align: center;
+      font-size: 12px;
     }
 
-    .server-card img { width: 50px; height: 50px; border-radius: 4px; margin-bottom: 10px; }
+    .server-card img { width: 50px; height: 50px; display: block; margin: 0 auto 10px; }
   </style>
 </head>
 <body>
@@ -236,10 +234,10 @@
     <div class="menu-item" onclick="switchTab('communities')">/ Root / Communities</div>
     
     <div class="user-card">
-      <div class="avatar-square">VX</div>
+      <div class="avatar-square" id="user-initial">?</div>
       <div class="user-meta">
         <span class="u-name" id="user-name">Guest_User</span>
-        <span class="u-status" id="user-status" style="color: #ff3e3e;">● Offline</span>
+        <span class="u-status" id="user-status">● Offline</span>
       </div>
     </div>
   </aside>
@@ -255,8 +253,8 @@
     <div id="about" class="view-content active">
       <div class="hero-box">
         <h1>VoxeliaForge Protocol</h1>
-        <p>A secure portal for community interaction. Unauthorized access is restricted.</p>
-        <div style="margin-top: 20px; display: flex; gap: 10px;">
+        <p>A secure social hub. Initialize your identity to begin creating nodes.</p>
+        <div id="auth-buttons" style="margin-top: 20px; display: flex; gap: 10px;">
           <a href="login.html" class="btn-neon">Access Portal</a>
           <a href="signup.html" class="btn-neon" style="border-color:white; color:white;">Register ID</a>
         </div>
@@ -267,7 +265,7 @@
       <div class="hero-box">
         <h2>Established Nodes</h2>
         <div id="server-list-container">
-          <p style="color: var(--text-dim);">Scanning sectors...</p>
+          <p style="color: var(--text-dim);">No nodes established in this session.</p>
         </div>
         <button class="btn-neon" style="margin-top:20px" onclick="checkAuthAndOpen()">Establish New Node</button>
       </div>
@@ -276,13 +274,12 @@
 
   <div id="modal" class="modal-overlay">
     <div class="modal-box">
-      <h3>CREATE_COMMUNITY</h3>
-      <div class="upload-area" id="pfp-preview" onclick="document.getElementById('pfp-input').click()">
-        <span>UPLOAD PFP</span>
-      </div>
+      <h3 style="margin:0">CREATE_NODE</h3>
+      <div class="upload-area" id="pfp-preview" onclick="document.getElementById('pfp-input').click()">UPLOAD</div>
       <input type="file" id="pfp-input" hidden accept="image/*" onchange="previewImage(this)">
       <input type="text" id="nodeName" placeholder="Node Name Identifier...">
       <div id="result-area" style="display:none;">
+        <p style="font-size:10px; color:var(--text-dim)">INVITE_LINK:</p>
         <div class="invite-box" id="invite-link"></div>
       </div>
       <div style="text-align: right; margin-top: 20px;">
@@ -293,20 +290,21 @@
   </div>
 
   <script>
-    /* LOGIC TO CHECK IF LOGGED IN */
-    // Tip: When redirecting from login.html, use index.html?auth=true
     const urlParams = new URLSearchParams(window.location.search);
     const isLoggedIn = urlParams.get('auth') === 'true';
+    const username = urlParams.get('user') || "Guest_User";
 
     if (isLoggedIn) {
-      document.getElementById('user-name').innerText = "Verified_User";
+      document.getElementById('user-name').innerText = username;
+      document.getElementById('user-initial').innerText = username.charAt(0).toUpperCase();
       document.getElementById('user-status').innerText = "● Encrypted";
       document.getElementById('user-status').style.color = "#00ff88";
+      document.getElementById('auth-buttons').style.display = 'none';
     }
 
     function checkAuthAndOpen() {
       if (!isLoggedIn) {
-        alert("ACCESS DENIED: Please log in to create nodes.");
+        alert("ACCESS DENIED: Identity verification required.");
         window.location.href = "login.html";
         return;
       }
@@ -331,16 +329,16 @@
     function submitCreate() {
       const name = document.getElementById('nodeName').value;
       if(!name) return;
-      const invite = `voxeliaforge.net/join/${Math.random().toString(36).substring(7)}`;
+      const invite = `vxf.net/join/${Math.random().toString(36).substring(7)}`;
       document.getElementById('invite-link').innerText = invite;
       document.getElementById('result-area').style.display = 'block';
       document.getElementById('confirm-btn').style.display = 'none';
 
       const container = document.getElementById('server-list-container');
-      if(container.innerHTML.includes("Scanning")) container.innerHTML = "";
+      if(container.innerHTML.includes("No nodes")) container.innerHTML = "";
       const card = document.createElement('div');
       card.className = 'server-card';
-      card.innerHTML = `<img src="${uploadedImage || ''}">${name}`;
+      card.innerHTML = uploadedImage ? `<img src="${uploadedImage}">${name}` : `<div style="height:50px; background:#222; margin-bottom:10px"></div>${name}`;
       container.appendChild(card);
     }
 
