@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>VoxeliaForge</title>
+  <title>VoxeliaForge | Secure Portal</title>
   <style>
     :root {
       --vault-black: #060608;
@@ -17,7 +17,7 @@
 
     body {
       margin: 0;
-      font-family: 'Inter', 'Segoe UI', sans-serif;
+      font-family: 'Inter', sans-serif;
       background: var(--vault-black);
       color: var(--text-main);
       display: flex;
@@ -49,6 +49,7 @@
       font-weight: 900;
       font-size: 14px;
       color: var(--text-dim);
+      text-decoration: none;
     }
 
     .nav-box:hover, .nav-box.active {
@@ -68,7 +69,7 @@
 
     .panel-header {
       padding: 20px;
-      font-size: 12px;
+      font-size: 11px;
       letter-spacing: 2px;
       color: var(--neon-cyan);
       text-transform: uppercase;
@@ -82,7 +83,6 @@
       color: var(--text-dim);
       cursor: pointer;
       font-size: 14px;
-      transition: 0.2s;
     }
 
     .menu-item:hover {
@@ -103,7 +103,7 @@
     .avatar-square {
       width: 36px;
       height: 36px;
-      background: linear-gradient(45deg, #1a1a1a, #333);
+      background: #1a1a1a;
       border: 1px solid var(--neon-cyan);
       display: flex;
       align-items: center;
@@ -111,7 +111,7 @@
     }
 
     .u-name { font-weight: bold; font-size: 13px; display: block; }
-    .u-status { font-size: 10px; color: #00ff88; text-transform: uppercase; display: block; }
+    .u-status { font-size: 10px; color: #ff3e3e; text-transform: uppercase; display: block; }
 
     .viewport {
       flex: 1;
@@ -129,37 +129,21 @@
       border-bottom: var(--border-style);
     }
 
-    .logo-container img {
-      height: 30px;
-      width: auto;
-      display: block;
-    }
+    .logo-container img { height: 30px; }
 
-    .view-content {
-      padding: 40px;
-      display: none;
-    }
-
+    .view-content { padding: 40px; display: none; }
     .view-content.active { display: block; }
-
-    .hero-box {
-      background: rgba(255,255,255,0.02);
-      border: var(--border-style);
-      padding: 40px;
-      max-width: 700px;
-    }
 
     .btn-neon {
       background: transparent;
       border: 1px solid var(--neon-cyan);
       color: var(--neon-cyan);
-      padding: 12px 25px;
-      font-size: 12px;
+      padding: 10px 20px;
+      font-size: 11px;
       font-weight: bold;
       text-transform: uppercase;
       cursor: pointer;
       transition: 0.3s;
-      margin-right: 10px;
       text-decoration: none;
       display: inline-block;
     }
@@ -167,14 +151,14 @@
     .btn-neon:hover {
       background: var(--neon-cyan);
       color: black;
-      box-shadow: 0 0 20px var(--neon-glow);
+      box-shadow: 0 0 15px var(--neon-glow);
     }
 
     .modal-overlay {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.85);
+      background: rgba(0,0,0,0.95);
       z-index: 999;
       justify-content: center;
       align-items: center;
@@ -184,25 +168,66 @@
       background: var(--vault-dark);
       border: 1px solid var(--neon-cyan);
       padding: 30px;
-      width: 350px;
+      width: 380px;
     }
 
-    input {
+    .upload-area {
+      width: 100px;
+      height: 100px;
+      border: 1px dashed var(--neon-cyan);
+      margin: 10px auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      color: var(--text-dim);
+      cursor: pointer;
+      background-size: cover;
+      background-position: center;
+    }
+
+    input[type="text"] {
       width: 100%;
       background: #000;
       border: 1px solid #333;
       padding: 12px;
       color: white;
-      margin: 20px 0;
+      margin: 15px 0;
       outline: none;
     }
+
+    .invite-box {
+      background: #111;
+      padding: 10px;
+      border: 1px solid #333;
+      font-family: monospace;
+      color: var(--neon-cyan);
+      margin-top: 10px;
+      font-size: 12px;
+    }
+
+    #server-list-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .server-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 15px;
+      text-align: center;
+    }
+
+    .server-card img { width: 50px; height: 50px; border-radius: 4px; margin-bottom: 10px; }
   </style>
 </head>
 <body>
 
   <nav class="nav-pillar">
     <div class="nav-box active" onclick="switchTab('about')">VF</div>
-    <div class="nav-box" onclick="openCreate()">+</div>
+    <div class="nav-box" onclick="checkAuthAndOpen()">+</div>
   </nav>
 
   <aside class="sub-panel">
@@ -213,8 +238,8 @@
     <div class="user-card">
       <div class="avatar-square">VX</div>
       <div class="user-meta">
-        <span class="u-name">Identity_Verified</span>
-        <span class="u-status">● Encrypted</span>
+        <span class="u-name" id="user-name">Guest_User</span>
+        <span class="u-status" id="user-status" style="color: #ff3e3e;">● Offline</span>
       </div>
     </div>
   </aside>
@@ -222,59 +247,108 @@
   <main class="viewport">
     <div class="view-header">
       <div style="display: flex; align-items: center; gap: 20px;">
-        <div class="logo-container">
-          <img src="logo.png" alt="VoxeliaForge Logo">
-        </div>
-        <div style="color: var(--text-dim); font-size: 14px;">
-          SYSTEM_PATH: <span id="path-text" style="color: var(--neon-cyan);">/ABOUT</span>
-        </div>
+        <div class="logo-container"><img src="logo.png" alt="Logo"></div>
+        <div style="color: var(--text-dim); font-size: 14px;">SYSTEM_PATH: <span id="path-text" style="color: var(--neon-cyan);">/ABOUT</span></div>
       </div>
     </div>
 
     <div id="about" class="view-content active">
       <div class="hero-box">
-        <h1 style="font-size: 32px; margin-top: 0;">VoxeliaForge Protocol</h1>
-        <p style="color: var(--text-dim);">Secure, decentralized social environment. Anti-exploit architecture ensures unauthorized token access is mathematically improbable.</p>
-        <div style="margin-top: 30px;">
+        <h1>VoxeliaForge Protocol</h1>
+        <p>A secure portal for community interaction. Unauthorized access is restricted.</p>
+        <div style="margin-top: 20px; display: flex; gap: 10px;">
           <a href="login.html" class="btn-neon">Access Portal</a>
-          <a href="signup.html" class="btn-neon" style="border-color: white; color: white;">Initialize Account</a>
+          <a href="signup.html" class="btn-neon" style="border-color:white; color:white;">Register ID</a>
         </div>
       </div>
     </div>
 
     <div id="communities" class="view-content">
       <div class="hero-box">
-        <h2>Active Nodes</h2>
-        <p style="color: var(--text-dim);">Scanning for secure communities...</p>
-        <button class="btn-neon" onclick="openCreate()">Establish New Node</button>
+        <h2>Established Nodes</h2>
+        <div id="server-list-container">
+          <p style="color: var(--text-dim);">Scanning sectors...</p>
+        </div>
+        <button class="btn-neon" style="margin-top:20px" onclick="checkAuthAndOpen()">Establish New Node</button>
       </div>
     </div>
   </main>
 
   <div id="modal" class="modal-overlay">
     <div class="modal-box">
-      <h3 style="margin-top:0">NEW_NODE_REQUEST</h3>
-      <input type="text" id="nodeName" placeholder="Node Identifier...">
-      <div style="text-align: right;">
+      <h3>CREATE_COMMUNITY</h3>
+      <div class="upload-area" id="pfp-preview" onclick="document.getElementById('pfp-input').click()">
+        <span>UPLOAD PFP</span>
+      </div>
+      <input type="file" id="pfp-input" hidden accept="image/*" onchange="previewImage(this)">
+      <input type="text" id="nodeName" placeholder="Node Name Identifier...">
+      <div id="result-area" style="display:none;">
+        <div class="invite-box" id="invite-link"></div>
+      </div>
+      <div style="text-align: right; margin-top: 20px;">
         <button class="btn-neon" style="border:none" onclick="closeCreate()">Abort</button>
-        <button class="btn-neon" onclick="submitCreate()">Confirm</button>
+        <button class="btn-neon" id="confirm-btn" onclick="submitCreate()">Confirm</button>
       </div>
     </div>
   </div>
 
   <script>
+    /* LOGIC TO CHECK IF LOGGED IN */
+    // Tip: When redirecting from login.html, use index.html?auth=true
+    const urlParams = new URLSearchParams(window.location.search);
+    const isLoggedIn = urlParams.get('auth') === 'true';
+
+    if (isLoggedIn) {
+      document.getElementById('user-name').innerText = "Verified_User";
+      document.getElementById('user-status').innerText = "● Encrypted";
+      document.getElementById('user-status').style.color = "#00ff88";
+    }
+
+    function checkAuthAndOpen() {
+      if (!isLoggedIn) {
+        alert("ACCESS DENIED: Please log in to create nodes.");
+        window.location.href = "login.html";
+        return;
+      }
+      document.getElementById('modal').style.display = 'flex';
+    }
+
+    function closeCreate() { document.getElementById('modal').style.display = 'none'; }
+
+    let uploadedImage = "";
+    function previewImage(input) {
+      if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = e => {
+          document.getElementById('pfp-preview').style.backgroundImage = `url(${e.target.result})`;
+          document.getElementById('pfp-preview').innerHTML = "";
+          uploadedImage = e.target.result;
+        };
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+
+    function submitCreate() {
+      const name = document.getElementById('nodeName').value;
+      if(!name) return;
+      const invite = `voxeliaforge.net/join/${Math.random().toString(36).substring(7)}`;
+      document.getElementById('invite-link').innerText = invite;
+      document.getElementById('result-area').style.display = 'block';
+      document.getElementById('confirm-btn').style.display = 'none';
+
+      const container = document.getElementById('server-list-container');
+      if(container.innerHTML.includes("Scanning")) container.innerHTML = "";
+      const card = document.createElement('div');
+      card.className = 'server-card';
+      card.innerHTML = `<img src="${uploadedImage || ''}">${name}`;
+      container.appendChild(card);
+    }
+
     function switchTab(id) {
       document.querySelectorAll('.view-content').forEach(v => v.classList.remove('active'));
       document.getElementById(id).classList.add('active');
       document.getElementById('path-text').innerText = '/' + id.toUpperCase();
     }
-    function openCreate() { document.getElementById('modal').style.display = 'flex'; }
-    function closeCreate() { document.getElementById('modal').style.display = 'none'; }
-    function submitCreate() {
-      const name = document.getElementById('nodeName').value;
-      if(name) { alert('Protocol Initiated: ' + name); closeCreate(); }
-    }
   </script>
-
 </body>
 </html>
