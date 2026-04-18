@@ -3,46 +3,56 @@
 <head>
   <meta charset="UTF-8">
   <title>VoxeliaForge Sign Up</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://googleapis.com" rel="stylesheet">
   <style>
     body { margin: 0; font-family: 'Orbitron', sans-serif; background: #0a0a0f; color: white; display: flex; justify-content: center; align-items: center; height: 100vh; }
-    .signup-container { background: #12121a; padding: 40px; border-radius: 20px; width: 350px; box-shadow: 0 0 20px #7df9ff44; border: 1px solid #1f1f2e; }
-    h1 { text-align: center; color: #7df9ff; margin-bottom: 20px; text-shadow: 0 0 15px #7df9ff; }
+    .container { background: #12121a; padding: 40px; border-radius: 20px; width: 320px; box-shadow: 0 0 20px rgba(125, 249, 255, 0.2); border: 1px solid #1f1f2e; }
+    h1 { text-align: center; color: #7df9ff; margin-bottom: 20px; }
     form { display: flex; flex-direction: column; }
-    label { margin-bottom: 5px; font-weight: bold; font-size: 12px; }
-    input { padding: 10px; margin-bottom: 15px; border-radius: 10px; border: 1px solid #1f1f2e; background: #0a0a0f; color: white; outline: none; }
-    input:focus { border: 1px solid #7df9ff; }
-    button { padding: 12px; border-radius: 20px; border: none; background: #7df9ff; color: black; font-weight: bold; cursor: pointer; transition: 0.3s; font-family: 'Orbitron'; }
-    button:hover { background: #5fd3d8; }
-    .login-link { text-align: center; margin-top: 15px; font-size: 0.8em; }
-    .login-link a { color: #7df9ff; text-decoration: none; }
+    label { margin-bottom: 5px; font-size: 11px; }
+    input { padding: 10px; margin-bottom: 15px; border-radius: 8px; border: 1px solid #1f1f2e; background: #0a0a0f; color: white; outline: none; }
+    button { padding: 12px; border-radius: 20px; border: none; background: #7df9ff; color: black; font-weight: bold; cursor: pointer; font-family: 'Orbitron'; }
+    .link { text-align: center; margin-top: 15px; font-size: 0.8em; }
+    .link a { color: #7df9ff; text-decoration: none; }
   </style>
 </head>
 <body>
-  <div class="signup-container">
+  <div class="container">
     <h1>Sign Up</h1>
     <form id="signupForm">
-      <label for="username">Username</label>
+      <label>Email</label>
       
-      <label for="email">Email</label>
-      <input type="email" id="email" placeholder="email@secure.net" required>
-      <label for="password">Password</label>
+      <label>Password</label>
       <input type="password" id="password" placeholder="••••••••" required>
-      <label for="confirm">Confirm</label>
+      <label>Confirm</label>
       <input type="password" id="confirm" placeholder="••••••••" required>
-      <button type="submit">Create Identity</button>
+      <button type="submit">Establish Identity</button>
     </form>
-    <div class="login-link">Already verified? <a href="login.html">Login</a></div>
+    <div class="link">Verified already? <a href="login.html">Login</a></div>
   </div>
-  <script>
-    document.getElementById('signupForm').addEventListener('submit', function(e) {
+
+  <script type="module">
+    import { initializeApp } from "https://gstatic.com";
+    import { getAuth, createUserWithEmailAndPassword } from "https://gstatic.com";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDyNeuKeRalGTilS76hdUYRDilF0CFKWrM",
+      authDomain: "://firebaseapp.com",
+      projectId: "voxeliaforge-v589m",
+      storageBucket: "voxeliaforge-v589m.firebasestorage.app",
+      messagingSenderId: "300204829415",
+      appId: "1:300204829415:web:c73f00c6eaaa03c5669042"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    document.getElementById('signupForm').addEventListener('submit', (e) => {
       e.preventDefault();
-      const p1 = document.getElementById('password').value;
-      const p2 = document.getElementById('confirm').value;
-      const user = document.getElementById('username').value;
-      if (p1 !== p2) { alert("Passwords do not match!"); return; }
-      window.location.href = `index.html?auth=true&user=${encodeURIComponent(user)}`;
+      if(document.getElementById('password').value !== document.getElementById('confirm').value) return alert("Keys do not match.");
+      createUserWithEmailAndPassword(auth, document.getElementById('email').value, document.getElementById('password').value)
+        .then(() => window.location.href = "index.html")
+        .catch(err => alert("Error: " + err.message));
     });
   </script>
 </body>
