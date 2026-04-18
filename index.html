@@ -25,7 +25,6 @@
       overflow: hidden;
     }
 
-    /* LEFT NAVIGATION (Non-Circle Icons) */
     .nav-pillar {
       width: 64px;
       background: var(--vault-dark);
@@ -56,10 +55,8 @@
       border-color: var(--neon-cyan);
       color: var(--neon-cyan);
       box-shadow: 0 0 10px var(--neon-glow);
-      transform: translateX(3px);
     }
 
-    /* SIDEBAR */
     .sub-panel {
       width: 260px;
       background: var(--vault-panel);
@@ -86,7 +83,6 @@
       cursor: pointer;
       font-size: 14px;
       transition: 0.2s;
-      border-radius: 2px;
     }
 
     .menu-item:hover {
@@ -94,7 +90,6 @@
       color: white;
     }
 
-    /* USER PROFILE (Bottom Corner) */
     .user-card {
       margin-top: auto;
       padding: 15px;
@@ -113,14 +108,11 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 10px;
     }
 
-    .user-meta span { display: block; }
-    .u-name { font-weight: bold; font-size: 13px; }
-    .u-status { font-size: 10px; color: #00ff88; text-transform: uppercase; }
+    .u-name { font-weight: bold; font-size: 13px; display: block; }
+    .u-status { font-size: 10px; color: #00ff88; text-transform: uppercase; display: block; }
 
-    /* MAIN VIEW */
     .viewport {
       flex: 1;
       display: flex;
@@ -132,10 +124,15 @@
       height: 60px;
       display: flex;
       align-items: center;
+      justify-content: space-between;
       padding: 0 30px;
       border-bottom: var(--border-style);
-      font-weight: 300;
-      letter-spacing: 1px;
+    }
+
+    .logo-container img {
+      height: 30px;
+      width: auto;
+      display: block;
     }
 
     .view-content {
@@ -143,9 +140,7 @@
       display: none;
     }
 
-    .view-content.active { display: block; animation: fadeIn 0.4s ease; }
-
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+    .view-content.active { display: block; }
 
     .hero-box {
       background: rgba(255,255,255,0.02);
@@ -175,13 +170,11 @@
       box-shadow: 0 0 20px var(--neon-glow);
     }
 
-    /* MODAL */
     .modal-overlay {
       display: none;
       position: fixed;
       inset: 0;
       background: rgba(0,0,0,0.85);
-      backdrop-filter: blur(5px);
       z-index: 999;
       justify-content: center;
       align-items: center;
@@ -203,8 +196,6 @@
       margin: 20px 0;
       outline: none;
     }
-
-    input:focus { border-color: var(--neon-cyan); }
   </style>
 </head>
 <body>
@@ -230,13 +221,20 @@
 
   <main class="viewport">
     <div class="view-header">
-      SYSTEM_PATH: <span id="path-text" style="color: var(--neon-cyan); margin-left: 10px;">/ABOUT</span>
+      <div style="display: flex; align-items: center; gap: 20px;">
+        <div class="logo-container">
+          <img src="logo.png" alt="VoxeliaForge Logo">
+        </div>
+        <div style="color: var(--text-dim); font-size: 14px;">
+          SYSTEM_PATH: <span id="path-text" style="color: var(--neon-cyan);">/ABOUT</span>
+        </div>
+      </div>
     </div>
 
     <div id="about" class="view-content active">
       <div class="hero-box">
-        <h1 style="font-size: 32px; margin-top: 0;">VoxeliaForge</h1>
-        <p style="color: var(--text-dim);">A decentralized, anti-exploit social environment. Our architecture isolates session data to ensure that unauthorized token access is mathematically improbable.</p>
+        <h1 style="font-size: 32px; margin-top: 0;">VoxeliaForge Protocol</h1>
+        <p style="color: var(--text-dim);">Secure, decentralized social environment. Anti-exploit architecture ensures unauthorized token access is mathematically improbable.</p>
         <div style="margin-top: 30px;">
           <a href="login.html" class="btn-neon">Access Portal</a>
           <a href="signup.html" class="btn-neon" style="border-color: white; color: white;">Initialize Account</a>
@@ -255,7 +253,7 @@
 
   <div id="modal" class="modal-overlay">
     <div class="modal-box">
-      <h3 style="margin-top:0">NEW_COMMUNITY_REQUEST</h3>
+      <h3 style="margin-top:0">NEW_NODE_REQUEST</h3>
       <input type="text" id="nodeName" placeholder="Node Identifier...">
       <div style="text-align: right;">
         <button class="btn-neon" style="border:none" onclick="closeCreate()">Abort</button>
@@ -270,12 +268,11 @@
       document.getElementById(id).classList.add('active');
       document.getElementById('path-text').innerText = '/' + id.toUpperCase();
     }
-
     function openCreate() { document.getElementById('modal').style.display = 'flex'; }
     function closeCreate() { document.getElementById('modal').style.display = 'none'; }
     function submitCreate() {
       const name = document.getElementById('nodeName').value;
-      if(name) { alert('Protocol Initiated for: ' + name); closeCreate(); }
+      if(name) { alert('Protocol Initiated: ' + name); closeCreate(); }
     }
   </script>
 
