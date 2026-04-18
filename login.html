@@ -3,39 +3,55 @@
 <head>
   <meta charset="UTF-8">
   <title>VoxeliaForge Login</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://googleapis.com" rel="stylesheet">
   <style>
     body { margin: 0; font-family: 'Orbitron', sans-serif; background: #0a0a0f; color: white; display: flex; justify-content: center; align-items: center; height: 100vh; }
-    .login-container { background: #12121a; padding: 40px; border-radius: 20px; width: 350px; box-shadow: 0 0 20px #7df9ff44; border: 1px solid #1f1f2e; }
-    h1 { text-align: center; color: #7df9ff; margin-bottom: 20px; text-shadow: 0 0 15px #7df9ff; }
+    .login-container { background: #12121a; padding: 40px; border-radius: 20px; width: 320px; box-shadow: 0 0 20px rgba(125, 249, 255, 0.2); border: 1px solid #1f1f2e; }
+    h1 { text-align: center; color: #7df9ff; margin-bottom: 20px; text-shadow: 0 0 10px #7df9ff; }
     form { display: flex; flex-direction: column; }
-    label { margin-bottom: 5px; font-weight: bold; font-size: 12px; }
-    input { padding: 12px; margin-bottom: 20px; border-radius: 10px; border: 1px solid #1f1f2e; background: #0a0a0f; color: white; outline: none; }
-    input:focus { border: 1px solid #7df9ff; box-shadow: 0 0 10px #7df9ff33; }
-    button { padding: 12px; border-radius: 20px; border: none; background: #7df9ff; color: black; font-weight: bold; cursor: pointer; transition: 0.3s; font-family: 'Orbitron'; }
-    button:hover { background: #5fd3d8; transform: scale(1.02); }
-    .signup-link { text-align: center; margin-top: 15px; font-size: 0.8em; }
-    .signup-link a { color: #7df9ff; text-decoration: none; }
+    label { margin-bottom: 5px; font-weight: bold; font-size: 11px; }
+    input { padding: 12px; margin-bottom: 20px; border-radius: 8px; border: 1px solid #1f1f2e; background: #0a0a0f; color: white; outline: none; }
+    input:focus { border-color: #7df9ff; }
+    button { padding: 12px; border-radius: 20px; border: none; background: #7df9ff; color: black; font-weight: bold; cursor: pointer; font-family: 'Orbitron'; }
+    button:hover { background: #5fd3d8; }
+    .link { text-align: center; margin-top: 15px; font-size: 0.8em; }
+    .link a { color: #7df9ff; text-decoration: none; }
   </style>
 </head>
 <body>
   <div class="login-container">
     <h1>Login</h1>
     <form id="loginForm">
-      <label for="username">Username</label>
-      
-      <label for="password">Password</label>
+      <label>Email Address</label>
+      <input type="email" id="email" placeholder="Enter your email" required>
+      <label>Access Key (Password)</label>
       <input type="password" id="password" placeholder="••••••••" required>
-      <button type="submit">Access Hub</button>
+      <button type="submit">Initialize Link</button>
     </form>
-    <div class="signup-link">Need an identity? <a href="signup.html">Sign Up</a></div>
+    <div class="link">New Identity? <a href="signup.html">Sign Up</a></div>
   </div>
-  <script>
-    document.getElementById('loginForm').addEventListener('submit', function(e) {
+
+  <script type="module">
+    import { initializeApp } from "https://gstatic.com";
+    import { getAuth, signInWithEmailAndPassword } from "https://gstatic.com";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDyNeuKeRalGTilS76hdUYRDilF0CFKWrM",
+      authDomain: "://firebaseapp.com",
+      projectId: "voxeliaforge-v589m",
+      storageBucket: "voxeliaforge-v589m.firebasestorage.app",
+      messagingSenderId: "300204829415",
+      appId: "1:300204829415:web:c73f00c6eaaa03c5669042"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    document.getElementById('loginForm').addEventListener('submit', (e) => {
       e.preventDefault();
-      const user = document.getElementById('username').value;
-      window.location.href = `index.html?auth=true&user=${encodeURIComponent(user)}`;
+      signInWithEmailAndPassword(auth, document.getElementById('email').value, document.getElementById('password').value)
+        .then(() => window.location.href = "index.html")
+        .catch(err => alert("Auth Failed: " + err.message));
     });
   </script>
 </body>
