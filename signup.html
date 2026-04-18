@@ -113,16 +113,18 @@
   <script type="module">
     import { initializeApp } from "https://gstatic.com";
     import { getAuth, createUserWithEmailAndPassword } from "https://gstatic.com";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
 
     const firebaseConfig = {
-      apiKey: "AIzaSyDyNeuKeRalGTilS76hdUYRDilF0CFKWrM",
-      authDomain: "://firebaseapp.com",
-      projectId: "voxeliaforge-v589m",
-      storageBucket: "voxeliaforge-v589m.firebasestorage.app",
-      messagingSenderId: "300204829415",
-      appId: "1:300204829415:web:c73f00c6eaaa03c5669042"
-    };
+    apiKey: "AIzaSyDyNeuKeRalGTilS76hdUYRDilF0CFKWrM",
+    authDomain: "voxeliaforge-v589m.firebaseapp.com",
+    projectId: "voxeliaforge-v589m",
+    storageBucket: "voxeliaforge-v589m.firebasestorage.app",
+    messagingSenderId: "300204829415",
+    appId: "1:300204829415:web:c73f00c6eaaa03c5669042"
+  };
 
+  // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
