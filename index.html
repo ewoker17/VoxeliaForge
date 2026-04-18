@@ -34,7 +34,7 @@
     .invite-box { background: #111; padding: 10px; border: 1px solid #333; color: var(--neon-cyan); font-family: monospace; font-size: 11px; }
     #server-list-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; margin-top: 20px; }
     .server-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 15px; text-align: center; font-size: 12px; }
-    .server-card img { width: 50px; height: 50px; display: block; margin: 0 auto 10px; }
+    .server-card img { width: 50px; height: 50px; display: block; margin: 0 auto 10px; border-radius: 4px; }
   </style>
 </head>
 <body>
@@ -70,7 +70,7 @@
     <div id="about" class="view-content active">
       <div style="background:rgba(255,255,255,0.02); border:var(--border-style); padding:40px; max-width:700px;">
         <h1>VoxeliaForge Protocol</h1>
-        <p>A secure portal for community interaction. Verify your identity to establish nodes.</p>
+        <p>Your secure identity is verified via Firebase cloud infrastructure. Establish permanent nodes below.</p>
         <div id="auth-buttons" style="margin-top: 20px; display: flex; gap: 10px;">
           <a href="login.html" class="btn-neon">Access Portal</a>
           <a href="signup.html" class="btn-neon" style="border-color:white; color:white;">Register ID</a>
@@ -81,7 +81,7 @@
     <div id="communities" class="view-content">
       <div style="background:rgba(255,255,255,0.02); border:var(--border-style); padding:40px; max-width:700px;">
         <h2>Established Nodes</h2>
-        <div id="server-list-container"><p style="color: var(--text-dim);">Scanning for active nodes...</p></div>
+        <div id="server-list-container"><p style="color: var(--text-dim);">Loading secure nodes...</p></div>
         <button class="btn-neon" style="margin-top:20px" onclick="checkAuthAndOpen()">Establish New Node</button>
       </div>
     </div>
@@ -106,6 +106,7 @@
   <script type="module">
     import { initializeApp } from "https://gstatic.com";
     import { getAuth, onAuthStateChanged, signOut } from "https://gstatic.com";
+    import { getFirestore, collection, addDoc, onSnapshot, query, orderBy } from "https://gstatic.com";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDyNeuKeRalGTilS76hdUYRDilF0CFKWrM",
@@ -118,22 +119,49 @@
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
+    const db = getFirestore(app);
 
     onAuthStateChanged(auth, (user) => {
       if (user) {
         window.userIsAuthenticated = true;
-        document.getElementById('user-name').innerText = user.email.split('@')[0];
-        document.getElementById('user-initial').innerText = user.email.charAt(0).toUpperCase();
+        const name = user.email.split('@')[0];
+        document.getElementById('user-name').innerText = name;
+        document.getElementById('user-initial').innerText = name.charAt(0).toUpperCase();
         document.getElementById('user-status').innerText = "● Encrypted";
         document.getElementById('user-status').style.color = "#00ff88";
         document.getElementById('auth-buttons').style.display = 'none';
         document.getElementById('logout-btn').style.display = 'block';
+        loadCommunities();
       } else {
         window.userIsAuthenticated = false;
       }
     });
 
     window.handleLogout = () => signOut(auth).then(() => window.location.reload());
+
+    function loadCommunities() {
+      const q = query(collection(db, "communities"), orderBy("timestamp", "desc"));
+      onSnapshot(q, (snapshot) => {
+        const container = document.getElementById('server-list-container');
+        container.innerHTML = "";
+        if (snapshot.empty) container.innerHTML = '<p style="color: var(--text-dim);">No active nodes found.</p>';
+        snapshot.forEach((doc) => {
+          const data = doc.data();
+          const card = document.createElement('div');
+          card.className = 'server-card';
+          card.innerHTML = `<img src="${data.image || ''}">${data.name}`;
+          container.appendChild(card);
+        });
+      });
+    }
+
+    window.saveCommunityToFirebase = async (name, image) => {
+      await addDoc(collection(db, "communities"), {
+        name: name,
+        image: image,
+        timestamp: new Date()
+      });
+    }
   </script>
 
   <script>
@@ -159,18 +187,13 @@
         reader.readAsDataURL(input.files[0]);
       }
     }
-    function submitCreate() {
+    async function submitCreate() {
       const name = document.getElementById('nodeName').value;
       if(!name) return;
       document.getElementById('invite-link').innerText = `vxf.net/join/${Math.random().toString(36).substring(7)}`;
       document.getElementById('result-area').style.display = 'block';
       document.getElementById('confirm-btn').style.display = 'none';
-      const container = document.getElementById('server-list-container');
-      if(container.innerHTML.includes("Scanning")) container.innerHTML = "";
-      const card = document.createElement('div');
-      card.className = 'server-card';
-      card.innerHTML = uploadedImage ? `<img src="${uploadedImage}">${name}` : `<div style="height:50px; background:#222; margin-bottom:10px"></div>${name}`;
-      container.appendChild(card);
+      await window.saveCommunityToFirebase(name, uploadedImage);
     }
   </script>
 </body>
