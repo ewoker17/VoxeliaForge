@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VoxeliaForge | Access Portal</title>
+    <!-- Firebase Auth Logic -->
+    <script type="module" src="firebaseauth.js"></script>
+    
+    <link href="https://jsdelivr.net" rel="stylesheet">
+    <style>
+        @import url("https://googleapis.com");
+
+        :root {
+            --white-color: hsl(0,0%,100%);
+            --black-color: hsl(230, 15%, 5%);
+            --body-font: "Poppins", sans-serif;
+            --h1-font-size: 1.75rem;
+            --small-font-size: .813rem;
+            --font-medium: 500;
+        }
+
+        * { box-sizing: border-box; padding: 0; margin: 0; }
+        body, input, button { font-family: var(--body-font); font-size: 1rem; }
+        body { color: var(--white-color); background-color: var(--black-color); }
+        input, button { border: none; outline: none; background: none; }
+        a { text-decoration: none; color: var(--white-color); }
+
+        .login {
+            position: relative;
+            height: 100vh;
+            display: grid;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .login__img {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            z-index: -1;
+            opacity: 0.4;
+            background: radial-gradient(circle, #0d0e12, #000);
+        }
+
+        .container {
+            position: relative;
+            background-color: hsla(0, 0%, 10%, 0.3);
+            border: 2px solid var(--white-color);
+            padding: 2.5rem 1.5rem;
+            border-radius: 1rem;
+            backdrop-filter: blur(12px);
+            width: 90vw;
+            max-width: 432px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .form-title {
+            text-align: center;
+            font-size: var(--h1-font-size);
+            font-weight: var(--font-medium);
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .input-group {
+            display: grid;
+            grid-template-columns: max-content 1fr;
+            align-items: center;
+            column-gap: 0.75rem;
+            border-bottom: 2px solid var(--white-color);
+            margin-bottom: 1.75rem;
+            position: relative;
+        }
+
+        .input-group i { font-size: 1.25rem; }
+
+        .input-group input {
+            width: 100%;
+            padding-block: 0.8rem;
+            color: var(--white-color);
+            position: relative;
+            z-index: 1;
+        }
+
+        .input-group label {
+            position: absolute;
+            left: 32px;
+            top: 13px;
+            font-weight: var(--font-medium);
+            transition: top 0.3s, font-size 0.3s;
+            pointer-events: none;
+        }
+
+        .input-group input:focus + label,
+        .input-group input:not(:placeholder-shown) + label {
+            top: -12px;
+            font-size: var(--small-font-size);
+            color: #7df9ff;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            background-color: var(--white-color);
+            color: #000;
+            font-weight: var(--font-medium);
+            cursor: pointer;
+            margin-bottom: 1rem;
+            transition: .3s;
+            text-transform: uppercase;
+        }
+
+        .btn:hover {
+            background-color: #7df9ff;
+            box-shadow: 0 0 15px rgba(125, 249, 255, 0.6);
+        }
+
+        .or {
+            text-align: center;
+            font-size: var(--small-font-size);
+            margin: 1.5rem 0;
+        }
+
+        .icons {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .icons i { font-size: 1.5rem; cursor: pointer; transition: .3s; }
+        .icons i:hover { color: #7df9ff; transform: scale(1.2); }
+
+        .links { text-align: center; font-size: var(--small-font-size); }
+        .links button { color: #7df9ff; font-weight: var(--font-medium); cursor: pointer; text-decoration: underline; }
+
+        .messageDiv {
+            background: rgba(255, 62, 62, 0.2);
+            color: #ff3e3e;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            text-align: center;
+            font-size: var(--small-font-size);
+            border: 1px solid #ff3e3e;
+        }
+    </style>
+</head>
+<body>
+    <div class="login">
+        <img src="login-bg.png" alt="background" class="login__img">
+
+        <!-- Sign Up Section -->
+        <div class="container" id="signup" style="display:none;">
+            <h1 class="form-title">Register</h1>
+            <form id="signupForm">
+                <div id="signUpMessage" class="messageDiv" style="display:none;"></div>
+                
+                <div class="input-group">
+                    <i class="ri-user-smile-line"></i>
+                    <input type="text" id="displayName" placeholder=" " required>
+                    <label>Display Name</label>
+                </div>
+
+                <div class="input-group">
+                    <i class="ri-at-line"></i>
+                    <input type="text" id="username" placeholder=" " required>
+                    <label>Username</label>
+                </div>
+
+                <div class="input-group">
+                    <i class="ri-mail-line"></i>
+                    <input type="email" id="rEmail" placeholder=" " required>
+                    <label>Email</label>
+                </div>
+
+                <div class="input-group">
+                    <i class="ri-lock-line"></i>
+                    <input type="password" id="rPassword" placeholder=" " required>
+                    <label>Password</label>
+                </div>
+
+                <button type="submit" class="btn" id="submitSignUp">Sign Up</button>
+            </form>
+            <p class="or">OR REGISTER WITH</p>
+            <div class="icons">
+                <i class="ri-google-fill" id="googleSignUp"></i>
+                <i class="ri-github-fill"></i>
+            </div>
+            <div class="links">
+                <p>Already Have Account? <button type="button" id="signInButton">Sign In</button></p>
+            </div>
+        </div>
+
+        <!-- Sign In Section -->
+        <div class="container" id="signIn">
+            <h1 class="form-title">Sign In</h1>
+            <form id="loginForm">
+                <div id="signInMessage" class="messageDiv" style="display:none;"></div>
+                <div class="input-group">
+                    <i class="ri-mail-line"></i>
+                    <input type="email" id="email" placeholder=" " required>
+                    <label>Email</label>
+                </div>
+                <div class="input-group">
+                    <i class="ri-lock-line"></i>
+                    <input type="password" id="password" placeholder=" " required>
+                    <label>Password</label>
+                </div>
+                <button type="submit" class="btn" id="submitSignIn">Sign In</button>
+            </form>
+            <p class="or">OR SIGN IN WITH</p>
+            <div class="icons">
+                <i class="ri-google-fill" id="googleSignIn"></i>
+                <i class="ri-github-fill"></i>
+            </div>
+            <div class="links">
+                <p>Don't have account yet? <button type="button" id="signUpButton">Sign Up</button></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const signupDiv = document.getElementById('signup');
+        const signinDiv = document.getElementById('signIn');
+        const signupBtn = document.getElementById('signUpButton');
+        const signinBtn = document.getElementById('signInButton');
+
+        signupBtn.onclick = () => {
+            signinDiv.style.display = 'none';
+            signupDiv.style.display = 'block';
+        }
+        signinBtn.onclick = () => {
+            signupDiv.style.display = 'none';
+            signinDiv.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
