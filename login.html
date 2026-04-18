@@ -2,80 +2,95 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>VoxeliaForge Login</title>
+  <title>VoxeliaForge | Access Portal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- 1. Firebase UI Styles -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@firebase-oss/ui-styles/dist/dist.min.css">
   <link href="https://googleapis.com" rel="stylesheet">
+
   <style>
-    body { margin: 0; font-family: 'Orbitron', sans-serif; background: #0a0a0f; color: white; display: flex; justify-content: center; align-items: center; height: 100vh; }
-    .login-container { background: #12121a; padding: 40px; border-radius: 20px; width: 320px; box-shadow: 0 0 20px rgba(125, 249, 255, 0.2); border: 1px solid #1f1f2e; text-align: center; }
-    h1 { color: #7df9ff; margin-bottom: 20px; text-shadow: 0 0 10px #7df9ff; }
-    form { display: flex; flex-direction: column; text-align: left; }
-    label { margin-bottom: 5px; font-weight: bold; font-size: 11px; }
-    input { padding: 12px; margin-bottom: 20px; border-radius: 8px; border: 1px solid #1f1f2e; background: #0a0a0f; color: white; outline: none; }
-    button { padding: 12px; border-radius: 20px; border: none; background: #7df9ff; color: black; font-weight: bold; cursor: pointer; font-family: 'Orbitron'; margin-bottom: 10px; transition: 0.3s; }
-    button:hover { background: #5fd3d8; opacity: 0.9; }
-    .google-btn { background: #fff; color: #444; display: flex; align-items: center; justify-content: center; gap: 10px; }
-    .google-btn:hover { background: #eee; }
-    .link { margin-top: 15px; font-size: 0.8em; }
-    .link a { color: #7df9ff; text-decoration: none; }
+    :root {
+      /* YOUR CUSTOM NEON THEME */
+      --fui-background: #0d0e12;      /* Vault Dark */
+      --fui-primary: #7df9ff;         /* Neon Cyan */
+      --fui-primary-hover: #00f2ff;   /* Glowing Cyan */
+      --fui-primary-surface: #000;    /* Text on Cyan buttons */
+      --fui-text: #e0e0e0;            /* Light gray text */
+      --fui-text-muted: #808090;      /* Dim text */
+      --fui-border: #1f1f2e;          /* Border color */
+      --fui-input: #060608;           /* Input background */
+      --fui-error: #ff3e3e;           /* Security alert red */
+      --fui-radius: 8px;
+      --fui-radius-card: 20px;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Orbitron', sans-serif;
+      background: #060608; /* Deep black background */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    /* Adds the neon glow to the login card */
+    #firebaseui-auth-container {
+      box-shadow: 0 0 30px rgba(125, 249, 255, 0.1);
+      border: 1px solid rgba(125, 249, 255, 0.1);
+      border-radius: 20px;
+    }
+
+    h1 {
+      color: #7df9ff;
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
   </style>
 </head>
 <body>
-  <div class="login-container">
-    <h1>Login</h1>
-    <form id="loginForm">
-      <label>Email Address</label>
-      
-      <label>Access Key</label>
-      <input type="password" id="password" placeholder="••••••••" required>
-      <button type="submit">Initialize Link</button>
-    </form>
-    <div style="width: 100%; height: 1px; background: #222; margin: 10px 0;"></div>
-    <button class="google-btn" id="googleBtn">
-      <img src="https://gstatic.com" width="18"> Sign in with Google
-    </button>
-    <div class="link">New Identity? <a href="signup.html">Sign Up</a></div>
+
+  <div>
+    <h1>System Access</h1>
+    <!-- The Firebase UI will load inside this div -->
+    <div id="firebaseui-auth-container"></div>
   </div>
 
-  <!-- 1. Add FirebaseUI CSS & JS to your <head> -->
-<script src="https://gstatic.com"></script>
-<link type="text/css" rel="stylesheet" href="https://gstatic.com" />
+  <!-- 2. Firebase SDKs -->
+  <script src="https://gstatic.com"></script>
+  <script src="https://gstatic.com"></script>
+  <script src="https://gstatic.com"></script>
 
-<!-- 2. The container where the login UI will appear -->
-<div id="firebaseui-auth-container"></div>
+  <script>
+    // YOUR CONFIG
+    const firebaseConfig = {
+      apiKey: "AIzaSyDyNeuKeRalGTilS76hdUYRDilF0CFKWrM",
+      authDomain: "://firebaseapp.com",
+      projectId: "voxeliaforge-v589m",
+      storageBucket: "voxeliaforge-v589m.firebasestorage.app",
+      messagingSenderId: "300204829415",
+      appId: "1:300204829415:web:c73f00c6eaaa03c5669042"
+    };
 
-<script type="module">
-  import { initializeApp } from "https://gstatic.com";
-  import { getAuth } from "https://gstatic.com";
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyDyNeuKeRalGTilS76hdUYRDilF0CFKWrM",
-    authDomain: "voxeliaforge-v589m.firebaseapp.com",
-    projectId: "voxeliaforge-v589m",
-    storageBucket: "voxeliaforge-v589m.firebasestorage.app",
-    messagingSenderId: "300204829415",
-    appId: "1:300204829415:web:c73f00c6eaaa03c5669042"
-  };
+    // Initialize the FirebaseUI Widget
+    const ui = new firebaseui.auth.AuthUI(firebase.auth());
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-
-  // 3. Initialize the FirebaseUI Widget
-  var ui = new firebaseui.auth.AuthUI(auth);
-
-  ui.start('#firebaseui-auth-container', {
-    signInSuccessUrl: 'index.html',
-    signInOptions: [
-      // List of providers you want to support
-      {
-        provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
-        requireDisplayName: true
-      },
-      firebase.auth.GoogleAuthProvider.PROVIDER_ID
-    ],
-    // Terms of service and privacy policy URLs
-    tosUrl: 'tos.html',
-    privacyPolicyUrl: 'privacy.html'
-  });
-</script>
+    ui.start('#firebaseui-auth-container', {
+      signInSuccessUrl: 'index.html',
+      signInOptions: [
+        firebase.auth.EmailAuthProvider.PROVIDER_ID,
+        firebase.auth.GoogleAuthProvider.PROVIDER_ID
+      ],
+      // Set to true to show the UI in Dark Mode by default
+      darkTheme: true 
+    });
+  </script>
 </body>
 </html>
