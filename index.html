@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>VoxeliaForge | Secure Portal</title>
+  <title>VoxeliaForge</title>
   <style>
     :root {
       --vault-black: #060608; --vault-dark: #0d0e12; --vault-panel: rgba(20, 22, 28, 0.8);
@@ -38,17 +38,14 @@
   </style>
 </head>
 <body>
-
   <nav class="nav-pillar">
     <div class="nav-box active" onclick="switchTab('about')">VF</div>
     <div class="nav-box" onclick="checkAuthAndOpen()">+</div>
   </nav>
-
   <aside class="sub-panel">
     <div class="panel-header">Forge Navigation</div>
     <div class="menu-item" onclick="switchTab('about')">/ Root / About</div>
     <div class="menu-item" onclick="switchTab('communities')">/ Root / Communities</div>
-    
     <div class="user-card">
       <div class="avatar-square" id="user-initial">?</div>
       <div class="user-meta">
@@ -58,7 +55,6 @@
       </div>
     </div>
   </aside>
-
   <main class="viewport">
     <div class="view-header">
       <div style="display: flex; align-items: center; gap: 20px;">
@@ -66,7 +62,6 @@
         <div style="color: var(--text-dim); font-size: 14px;">PATH: <span id="path-text" style="color: var(--neon-cyan);">/ABOUT</span></div>
       </div>
     </div>
-
     <div id="about" class="view-content active">
       <div style="background:rgba(255,255,255,0.02); border:var(--border-style); padding:40px; max-width:700px;">
         <h1>VoxeliaForge Protocol</h1>
@@ -77,7 +72,6 @@
         </div>
       </div>
     </div>
-
     <div id="communities" class="view-content">
       <div style="background:rgba(255,255,255,0.02); border:var(--border-style); padding:40px; max-width:700px;">
         <h2>Established Nodes</h2>
@@ -86,7 +80,6 @@
       </div>
     </div>
   </main>
-
   <div id="modal" class="modal-overlay">
     <div class="modal-box">
       <h3 style="margin:0">NEW_NODE_REQUEST</h3>
@@ -110,7 +103,7 @@
 
     const firebaseConfig = {
       apiKey: "AIzaSyDyNeuKeRalGTilS76hdUYRDilF0CFKWrM",
-      authDomain: "://firebaseapp.com",
+      authDomain: "voxeliaforge-v589m.firebaseapp.com",
       projectId: "voxeliaforge-v589m",
       storageBucket: "voxeliaforge-v589m.firebasestorage.app",
       messagingSenderId: "300204829415",
@@ -124,7 +117,7 @@
     onAuthStateChanged(auth, (user) => {
       if (user) {
         window.userIsAuthenticated = true;
-        const name = user.email.split('@')[0];
+        const name = user.displayName || user.email.split('@')[0];
         document.getElementById('user-name').innerText = name;
         document.getElementById('user-initial').innerText = name.charAt(0).toUpperCase();
         document.getElementById('user-status').innerText = "● Encrypted";
@@ -163,7 +156,6 @@
       });
     }
   </script>
-
   <script>
     function switchTab(id) {
       document.querySelectorAll('.view-content').forEach(v => v.classList.remove('active'));
