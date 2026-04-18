@@ -26,24 +26,29 @@
     body {
       margin: 0;
       font-family: 'Orbitron', sans-serif;
-      background: #060608;
+      background: #000; /* Pure black for a seamless look */
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
     }
 
+    /* 🔥 HIDDEN BY DEFAULT TO PREVENT THE LOADING LINE */
     #firebaseui-auth-container {
-      box-shadow: 0 0 30px rgba(125, 249, 255, 0.1);
+      display: none; 
+      box-shadow: 0 0 30px rgba(125, 249, 255, 0.15);
       border: 1px solid rgba(125, 249, 255, 0.1);
       border-radius: 20px;
-      width: 100%;
+      width: 90%;
       max-width: 400px;
     }
 
-    /* 🔥 STOPS THE LOADING BAR FROM SHOWING */
-    .mdl-progress { display: none !important; }
-    #firebaseui_container .firebaseui-busy-indicator { display: none !important; }
+    /* FORCES ALL LOADERS OFF */
+    .mdl-progress, 
+    .firebaseui-busy-indicator, 
+    .firebaseui-callback-indicator { 
+      display: none !important; 
+    }
   </style>
 </head>
 <body>
@@ -73,11 +78,10 @@
         firebase.auth.EmailAuthProvider.PROVIDER_ID,
         firebase.auth.GoogleAuthProvider.PROVIDER_ID
       ],
-      // 🔥 CALLBACK TO DISABLE LOADER
       callbacks: {
+        // 🔥 REVEALS THE FORM ONLY WHEN FULLY LOADED
         uiShown: function() {
-          const loader = document.querySelector('.mdl-progress');
-          if(loader) loader.style.display = 'none';
+          document.getElementById('firebaseui-auth-container').style.display = 'block';
         }
       }
     });
