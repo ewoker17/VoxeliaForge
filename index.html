@@ -9,8 +9,10 @@
       --discord-sidebar: #2b2d31;
       --discord-server-list: #1e1f22;
       --discord-blue: #5865f2;
+      --discord-user-panel: #232428;
       --cyan-accent: #00ffff;
       --text-muted: #b5bac1;
+      --online-green: #23a55a;
     }
 
     body {
@@ -48,7 +50,7 @@
       text-decoration: none;
     }
 
-    .server-icon:hover {
+    .server-icon:hover, .server-icon.active {
       border-radius: 15px;
       background: var(--discord-blue);
       color: white;
@@ -59,6 +61,7 @@
       background: var(--discord-sidebar);
       display: flex;
       flex-direction: column;
+      position: relative;
     }
 
     .sidebar-header {
@@ -66,23 +69,64 @@
       font-weight: bold;
       border-bottom: 1px solid rgba(0,0,0,0.2);
       box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-      color: white;
+    }
+
+    .nav-group {
+      flex: 1;
+      padding-top: 10px;
     }
 
     .nav-item {
-      padding: 10px 15px;
+      padding: 8px 12px;
       margin: 2px 8px;
       border-radius: 4px;
       color: var(--text-muted);
       cursor: pointer;
-      text-decoration: none;
       display: block;
+      transition: 0.1s;
     }
 
     .nav-item:hover {
       background: rgba(255,255,255,0.05);
       color: white;
     }
+
+    .user-settings-panel {
+      height: 52px;
+      background: var(--discord-user-panel);
+      display: flex;
+      align-items: center;
+      padding: 0 8px;
+      gap: 8px;
+    }
+
+    .user-avatar {
+      width: 32px;
+      height: 32px;
+      background: var(--discord-blue);
+      border-radius: 50%;
+      position: relative;
+    }
+
+    .status-dot {
+      width: 10px;
+      height: 10px;
+      background: var(--online-green);
+      border-radius: 50%;
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      border: 2px solid var(--discord-user-panel);
+    }
+
+    .user-info {
+      flex: 1;
+      font-size: 13px;
+      overflow: hidden;
+    }
+
+    .username { font-weight: bold; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .user-tag { color: var(--text-muted); font-size: 11px; display: block; }
 
     .main-container {
       flex: 1;
@@ -97,36 +141,23 @@
       padding: 0 16px;
       background: var(--discord-dark);
       border-bottom: 1px solid rgba(0,0,0,0.2);
-      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
     }
 
-    .logo-text {
-      font-weight: bold;
-      color: var(--cyan-accent);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    .content {
+    .content-area {
       padding: 24px;
       overflow-y: auto;
+      display: none;
     }
 
-    .info-card {
+    .content-area.active {
+      display: block;
+    }
+
+    .section-card {
       background: #383a40;
-      padding: 24px;
+      padding: 30px;
       border-radius: 8px;
-      border-left: 4px solid var(--cyan-accent);
       max-width: 800px;
-    }
-
-    .info-card h1 { margin-top: 0; font-size: 20px; }
-    .info-card p { color: var(--text-muted); }
-
-    .auth-bar {
-      margin-top: 20px;
-      display: flex;
-      gap: 10px;
     }
 
     .btn {
@@ -137,49 +168,120 @@
       cursor: pointer;
       text-decoration: none;
       display: inline-block;
-      font-size: 14px;
     }
 
     .btn-blue { background: var(--discord-blue); color: white; }
-    .btn-outline { background: transparent; border: 1px solid white; color: white; }
 
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.8);
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+    }
+
+    .modal-content {
+      background: var(--discord-dark);
+      padding: 30px;
+      border-radius: 8px;
+      width: 400px;
+      text-align: center;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 15px 0;
+      background: var(--discord-server-list);
+      border: 1px solid rgba(0,0,0,0.3);
+      color: white;
+      border-radius: 3px;
+      box-sizing: border-box;
+    }
   </style>
 </head>
 <body>
 
   <div class="server-list">
-    <a href="#" class="server-icon" style="border-radius: 15px; background: var(--discord-blue); color: white;">VF</a>
+    <div class="server-icon active" onclick="showSection('about')">VF</div>
     <div style="width: 32px; height: 2px; background: #35363c; margin: 4px 0;"></div>
-    <div class="server-icon">+</div>
+    <div class="server-icon" onclick="openModal()">+</div>
   </div>
 
   <div class="sidebar">
     <div class="sidebar-header">VoxeliaForge</div>
-    <nav style="padding-top: 10px;">
-      <a class="nav-item" href="#"># about-us</a>
-      <a class="nav-item" href="#"># security-info</a>
-      <a class="nav-item" href="#"># communities</a>
-      <a class="nav-item" href="#"># direct-messages</a>
-    </nav>
+    <div class="nav-group">
+      <div class="nav-item" onclick="showSection('about')"># about-us</div>
+      <div class="nav-item" onclick="showSection('communities')"># browse-communities</div>
+    </div>
+
+    <div class="user-settings-panel">
+      <div class="user-avatar">
+        <div class="status-dot"></div>
+      </div>
+      <div class="user-info">
+        <span class="username">Guest_User</span>
+        <span class="user-tag">Secure_ID: 1001</span>
+      </div>
+    </div>
   </div>
 
   <div class="main-container">
     <div class="topbar">
-      <span class="logo-text"># welcome-to-the-forge</span>
+      <span id="page-title" style="font-weight: bold; color: var(--cyan-accent);"># ABOUT-US</span>
     </div>
 
-    <div class="content">
-      <div class="info-card">
-        <h1>About VoxeliaForge</h1>
-        <p>A secure alternative to modern social platforms. Protect your identity while staying connected with communities and friends through hardened encryption and anti-hijack technology.</p>
-        
-        <div class="auth-bar">
-          <a href="login.html" class="btn btn-blue">Log In</a>
-          <a href="signup.html" class="btn btn-outline">Sign Up</a>
+    <div id="about" class="content-area active">
+      <div class="section-card">
+        <h2>Protecting Your Privacy</h2>
+        <p>VoxeliaForge is designed for secure, private communication. Unlike other platforms, we focus on preventing token logging and session hijacking at the core.</p>
+        <div style="margin-top: 20px;">
+          <a href="login.html" class="btn btn-blue">Login</a>
+          <a href="signup.html" class="btn" style="color: white; border: 1px solid white; margin-left: 10px;">Signup</a>
         </div>
       </div>
     </div>
+
+    <div id="communities" class="content-area">
+      <div class="section-card">
+        <h2>Your Communities</h2>
+        <p>You haven't joined any communities yet. Create one or join by ID.</p>
+        <button class="btn btn-blue" onclick="openModal()">Create Community</button>
+      </div>
+    </div>
   </div>
+
+  <div id="createModal" class="modal">
+    <div class="modal-content">
+      <h3>Create Your Community</h3>
+      <input type="text" placeholder="Community Name" id="commName">
+      <div style="display: flex; gap: 10px; justify-content: flex-end;">
+        <button class="btn" onclick="closeModal()" style="background: transparent; color: white;">Cancel</button>
+        <button class="btn btn-blue" onclick="createCommunity()">Create</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function showSection(id) {
+      document.querySelectorAll('.content-area').forEach(el => el.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      document.getElementById('page-title').innerText = '# ' + id.toUpperCase();
+    }
+
+    function openModal() { document.getElementById('createModal').style.display = 'flex'; }
+    function closeModal() { document.getElementById('createModal').style.display = 'none'; }
+
+    function createCommunity() {
+      const name = document.getElementById('commName').value;
+      if(name) {
+        alert("Community Created: " + name + "\nSecuring channels...");
+        closeModal();
+      }
+    }
+  </script>
 
 </body>
 </html>
