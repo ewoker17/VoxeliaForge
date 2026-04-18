@@ -4,112 +4,39 @@
   <meta charset="UTF-8">
   <title>VoxeliaForge Login</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- Google Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap" rel="stylesheet">
-
+  <link href="https://googleapis.com" rel="stylesheet">
   <style>
-    body {
-      margin: 0;
-      font-family: 'Orbitron', sans-serif;
-      background: #0a0a0f;
-      color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-
-    .login-container {
-      background: #12121a;
-      padding: 40px;
-      border-radius: 20px;
-      width: 350px;
-      box-shadow: 0 0 20px #7df9ff44;
-      border: 1px solid #1f1f2e;
-    }
-
-    h1 {
-      text-align: center;
-      color: #7df9ff;
-      margin-bottom: 20px;
-      text-shadow: 0 0 15px #7df9ff;
-    }
-
-    form {
-      display: flex;
-      flex-direction: column;
-    }
-
-    label {
-      margin-bottom: 5px;
-      font-weight: bold;
-    }
-
-    input {
-      padding: 10px;
-      margin-bottom: 20px;
-      border-radius: 10px;
-      border: 1px solid #1f1f2e;
-      background: #0a0a0f;
-      color: white;
-    }
-
-    input:focus {
-      outline: none;
-      border: 1px solid #7df9ff;
-      box-shadow: 0 0 10px #7df9ff33;
-    }
-
-    button {
-      padding: 12px;
-      border-radius: 20px;
-      border: none;
-      background: #7df9ff;
-      color: black;
-      font-weight: bold;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    button:hover {
-      background: #5fd3d8;
-    }
-
-    .signup-link {
-      text-align: center;
-      margin-top: 15px;
-      font-size: 0.9em;
-    }
-
-    .signup-link a {
-      color: #7df9ff;
-      text-decoration: none;
-    }
-
-    .signup-link a:hover {
-      text-decoration: underline;
-    }
+    body { margin: 0; font-family: 'Orbitron', sans-serif; background: #0a0a0f; color: white; display: flex; justify-content: center; align-items: center; height: 100vh; }
+    .login-container { background: #12121a; padding: 40px; border-radius: 20px; width: 350px; box-shadow: 0 0 20px #7df9ff44; border: 1px solid #1f1f2e; }
+    h1 { text-align: center; color: #7df9ff; margin-bottom: 20px; text-shadow: 0 0 15px #7df9ff; }
+    form { display: flex; flex-direction: column; }
+    label { margin-bottom: 5px; font-weight: bold; font-size: 12px; }
+    input { padding: 12px; margin-bottom: 20px; border-radius: 10px; border: 1px solid #1f1f2e; background: #0a0a0f; color: white; outline: none; }
+    input:focus { border: 1px solid #7df9ff; box-shadow: 0 0 10px #7df9ff33; }
+    button { padding: 12px; border-radius: 20px; border: none; background: #7df9ff; color: black; font-weight: bold; cursor: pointer; transition: 0.3s; font-family: 'Orbitron'; }
+    button:hover { background: #5fd3d8; transform: scale(1.02); }
+    .signup-link { text-align: center; margin-top: 15px; font-size: 0.8em; }
+    .signup-link a { color: #7df9ff; text-decoration: none; }
   </style>
 </head>
 <body>
-
   <div class="login-container">
     <h1>Login</h1>
-    <form>
-      <label for="username">Username or Email</label>
-      <input type="text" id="username" placeholder="Enter your username or email" required>
-
+    <form id="loginForm">
+      <label for="username">Username</label>
+      
       <label for="password">Password</label>
-      <input type="password" id="password" placeholder="Enter your password" required>
-
-      <button type="submit">Login</button>
+      <input type="password" id="password" placeholder="••••••••" required>
+      <button type="submit">Access Hub</button>
     </form>
-
-    <div class="signup-link">
-      Don't have an account? <a href="signup.html">Sign Up</a>
-    </div>
+    <div class="signup-link">Need an identity? <a href="signup.html">Sign Up</a></div>
   </div>
-
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const user = document.getElementById('username').value;
+      window.location.href = `index.html?auth=true&user=${encodeURIComponent(user)}`;
+    });
+  </script>
 </body>
 </html>
