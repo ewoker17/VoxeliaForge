@@ -5,281 +5,277 @@
   <title>VoxeliaForge</title>
   <style>
     :root {
-      --discord-dark: #313338;
-      --discord-sidebar: #2b2d31;
-      --discord-server-list: #1e1f22;
-      --discord-blue: #5865f2;
-      --discord-user-panel: #232428;
-      --cyan-accent: #00ffff;
-      --text-muted: #b5bac1;
-      --online-green: #23a55a;
+      --vault-black: #060608;
+      --vault-dark: #0d0e12;
+      --vault-panel: rgba(20, 22, 28, 0.8);
+      --neon-cyan: #00f2ff;
+      --neon-glow: rgba(0, 242, 255, 0.3);
+      --text-main: #e0e0e0;
+      --text-dim: #808090;
+      --border-style: 1px solid rgba(0, 242, 255, 0.15);
     }
 
     body {
       margin: 0;
-      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-      background: var(--discord-dark);
-      color: white;
+      font-family: 'Inter', 'Segoe UI', sans-serif;
+      background: var(--vault-black);
+      color: var(--text-main);
       display: flex;
       height: 100vh;
       overflow: hidden;
     }
 
-    .server-list {
-      width: 72px;
-      background: var(--discord-server-list);
+    /* LEFT NAVIGATION (Non-Circle Icons) */
+    .nav-pillar {
+      width: 64px;
+      background: var(--vault-dark);
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding-top: 12px;
-      gap: 8px;
+      padding-top: 20px;
+      border-right: var(--border-style);
+      gap: 15px;
     }
 
-    .server-icon {
-      width: 48px;
-      height: 48px;
-      background: var(--discord-dark);
-      border-radius: 50%;
+    .nav-box {
+      width: 42px;
+      height: 42px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.1);
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      transition: 0.2s;
-      color: var(--cyan-accent);
-      font-weight: bold;
-      text-decoration: none;
+      transition: all 0.3s;
+      font-weight: 900;
+      font-size: 14px;
+      color: var(--text-dim);
     }
 
-    .server-icon:hover, .server-icon.active {
-      border-radius: 15px;
-      background: var(--discord-blue);
-      color: white;
+    .nav-box:hover, .nav-box.active {
+      border-color: var(--neon-cyan);
+      color: var(--neon-cyan);
+      box-shadow: 0 0 10px var(--neon-glow);
+      transform: translateX(3px);
     }
 
-    .sidebar {
-      width: 240px;
-      background: var(--discord-sidebar);
+    /* SIDEBAR */
+    .sub-panel {
+      width: 260px;
+      background: var(--vault-panel);
+      backdrop-filter: blur(10px);
       display: flex;
       flex-direction: column;
-      position: relative;
+      border-right: var(--border-style);
     }
 
-    .sidebar-header {
-      padding: 15px;
-      font-weight: bold;
-      border-bottom: 1px solid rgba(0,0,0,0.2);
-      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    .panel-header {
+      padding: 20px;
+      font-size: 12px;
+      letter-spacing: 2px;
+      color: var(--neon-cyan);
+      text-transform: uppercase;
+      font-weight: 800;
+      border-bottom: var(--border-style);
     }
 
-    .nav-group {
-      flex: 1;
-      padding-top: 10px;
-    }
-
-    .nav-item {
-      padding: 8px 12px;
-      margin: 2px 8px;
-      border-radius: 4px;
-      color: var(--text-muted);
+    .menu-item {
+      padding: 12px 20px;
+      margin: 4px 10px;
+      color: var(--text-dim);
       cursor: pointer;
-      display: block;
-      transition: 0.1s;
+      font-size: 14px;
+      transition: 0.2s;
+      border-radius: 2px;
     }
 
-    .nav-item:hover {
-      background: rgba(255,255,255,0.05);
+    .menu-item:hover {
+      background: rgba(0, 242, 255, 0.05);
       color: white;
     }
 
-    .user-settings-panel {
-      height: 52px;
-      background: var(--discord-user-panel);
+    /* USER PROFILE (Bottom Corner) */
+    .user-card {
+      margin-top: auto;
+      padding: 15px;
+      background: rgba(0,0,0,0.3);
+      border-top: var(--border-style);
       display: flex;
       align-items: center;
-      padding: 0 8px;
-      gap: 8px;
+      gap: 12px;
     }
 
-    .user-avatar {
-      width: 32px;
-      height: 32px;
-      background: var(--discord-blue);
-      border-radius: 50%;
-      position: relative;
+    .avatar-square {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(45deg, #1a1a1a, #333);
+      border: 1px solid var(--neon-cyan);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
     }
 
-    .status-dot {
-      width: 10px;
-      height: 10px;
-      background: var(--online-green);
-      border-radius: 50%;
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      border: 2px solid var(--discord-user-panel);
-    }
+    .user-meta span { display: block; }
+    .u-name { font-weight: bold; font-size: 13px; }
+    .u-status { font-size: 10px; color: #00ff88; text-transform: uppercase; }
 
-    .user-info {
-      flex: 1;
-      font-size: 13px;
-      overflow: hidden;
-    }
-
-    .username { font-weight: bold; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .user-tag { color: var(--text-muted); font-size: 11px; display: block; }
-
-    .main-container {
+    /* MAIN VIEW */
+    .viewport {
       flex: 1;
       display: flex;
       flex-direction: column;
+      background: radial-gradient(circle at top left, #0f1117, #060608);
     }
 
-    .topbar {
-      height: 48px;
+    .view-header {
+      height: 60px;
       display: flex;
       align-items: center;
-      padding: 0 16px;
-      background: var(--discord-dark);
-      border-bottom: 1px solid rgba(0,0,0,0.2);
+      padding: 0 30px;
+      border-bottom: var(--border-style);
+      font-weight: 300;
+      letter-spacing: 1px;
     }
 
-    .content-area {
-      padding: 24px;
-      overflow-y: auto;
+    .view-content {
+      padding: 40px;
       display: none;
     }
 
-    .content-area.active {
-      display: block;
+    .view-content.active { display: block; animation: fadeIn 0.4s ease; }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+    .hero-box {
+      background: rgba(255,255,255,0.02);
+      border: var(--border-style);
+      padding: 40px;
+      max-width: 700px;
     }
 
-    .section-card {
-      background: #383a40;
-      padding: 30px;
-      border-radius: 8px;
-      max-width: 800px;
-    }
-
-    .btn {
-      padding: 10px 20px;
-      border-radius: 3px;
-      border: none;
+    .btn-neon {
+      background: transparent;
+      border: 1px solid var(--neon-cyan);
+      color: var(--neon-cyan);
+      padding: 12px 25px;
+      font-size: 12px;
       font-weight: bold;
+      text-transform: uppercase;
       cursor: pointer;
+      transition: 0.3s;
+      margin-right: 10px;
       text-decoration: none;
       display: inline-block;
     }
 
-    .btn-blue { background: var(--discord-blue); color: white; }
-
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.8);
-      justify-content: center;
-      align-items: center;
-      z-index: 2000;
+    .btn-neon:hover {
+      background: var(--neon-cyan);
+      color: black;
+      box-shadow: 0 0 20px var(--neon-glow);
     }
 
-    .modal-content {
-      background: var(--discord-dark);
+    /* MODAL */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(5px);
+      z-index: 999;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-box {
+      background: var(--vault-dark);
+      border: 1px solid var(--neon-cyan);
       padding: 30px;
-      border-radius: 8px;
-      width: 400px;
-      text-align: center;
+      width: 350px;
     }
 
     input {
       width: 100%;
-      padding: 10px;
-      margin: 15px 0;
-      background: var(--discord-server-list);
-      border: 1px solid rgba(0,0,0,0.3);
+      background: #000;
+      border: 1px solid #333;
+      padding: 12px;
       color: white;
-      border-radius: 3px;
-      box-sizing: border-box;
+      margin: 20px 0;
+      outline: none;
     }
+
+    input:focus { border-color: var(--neon-cyan); }
   </style>
 </head>
 <body>
 
-  <div class="server-list">
-    <div class="server-icon active" onclick="showSection('about')">VF</div>
-    <div style="width: 32px; height: 2px; background: #35363c; margin: 4px 0;"></div>
-    <div class="server-icon" onclick="openModal()">+</div>
-  </div>
+  <nav class="nav-pillar">
+    <div class="nav-box active" onclick="switchTab('about')">VF</div>
+    <div class="nav-box" onclick="openCreate()">+</div>
+  </nav>
 
-  <div class="sidebar">
-    <div class="sidebar-header">VoxeliaForge</div>
-    <div class="nav-group">
-      <div class="nav-item" onclick="showSection('about')"># about-us</div>
-      <div class="nav-item" onclick="showSection('communities')"># browse-communities</div>
-    </div>
-
-    <div class="user-settings-panel">
-      <div class="user-avatar">
-        <div class="status-dot"></div>
-      </div>
-      <div class="user-info">
-        <span class="username">Guest_User</span>
-        <span class="user-tag">Secure_ID: 1001</span>
+  <aside class="sub-panel">
+    <div class="panel-header">Forge Navigation</div>
+    <div class="menu-item" onclick="switchTab('about')">/ Root / About</div>
+    <div class="menu-item" onclick="switchTab('communities')">/ Root / Communities</div>
+    
+    <div class="user-card">
+      <div class="avatar-square">VX</div>
+      <div class="user-meta">
+        <span class="u-name">Identity_Verified</span>
+        <span class="u-status">● Encrypted</span>
       </div>
     </div>
-  </div>
+  </aside>
 
-  <div class="main-container">
-    <div class="topbar">
-      <span id="page-title" style="font-weight: bold; color: var(--cyan-accent);"># ABOUT-US</span>
+  <main class="viewport">
+    <div class="view-header">
+      SYSTEM_PATH: <span id="path-text" style="color: var(--neon-cyan); margin-left: 10px;">/ABOUT</span>
     </div>
 
-    <div id="about" class="content-area active">
-      <div class="section-card">
-        <h2>Protecting Your Privacy</h2>
-        <p>VoxeliaForge is designed for secure, private communication. Unlike other platforms, we focus on preventing token logging and session hijacking at the core.</p>
-        <div style="margin-top: 20px;">
-          <a href="login.html" class="btn btn-blue">Login</a>
-          <a href="signup.html" class="btn" style="color: white; border: 1px solid white; margin-left: 10px;">Signup</a>
+    <div id="about" class="view-content active">
+      <div class="hero-box">
+        <h1 style="font-size: 32px; margin-top: 0;">VoxeliaForge</h1>
+        <p style="color: var(--text-dim);">A decentralized, anti-exploit social environment. Our architecture isolates session data to ensure that unauthorized token access is mathematically improbable.</p>
+        <div style="margin-top: 30px;">
+          <a href="login.html" class="btn-neon">Access Portal</a>
+          <a href="signup.html" class="btn-neon" style="border-color: white; color: white;">Initialize Account</a>
         </div>
       </div>
     </div>
 
-    <div id="communities" class="content-area">
-      <div class="section-card">
-        <h2>Your Communities</h2>
-        <p>You haven't joined any communities yet. Create one or join by ID.</p>
-        <button class="btn btn-blue" onclick="openModal()">Create Community</button>
+    <div id="communities" class="view-content">
+      <div class="hero-box">
+        <h2>Active Nodes</h2>
+        <p style="color: var(--text-dim);">Scanning for secure communities...</p>
+        <button class="btn-neon" onclick="openCreate()">Establish New Node</button>
       </div>
     </div>
-  </div>
+  </main>
 
-  <div id="createModal" class="modal">
-    <div class="modal-content">
-      <h3>Create Your Community</h3>
-      <input type="text" placeholder="Community Name" id="commName">
-      <div style="display: flex; gap: 10px; justify-content: flex-end;">
-        <button class="btn" onclick="closeModal()" style="background: transparent; color: white;">Cancel</button>
-        <button class="btn btn-blue" onclick="createCommunity()">Create</button>
+  <div id="modal" class="modal-overlay">
+    <div class="modal-box">
+      <h3 style="margin-top:0">NEW_COMMUNITY_REQUEST</h3>
+      <input type="text" id="nodeName" placeholder="Node Identifier...">
+      <div style="text-align: right;">
+        <button class="btn-neon" style="border:none" onclick="closeCreate()">Abort</button>
+        <button class="btn-neon" onclick="submitCreate()">Confirm</button>
       </div>
     </div>
   </div>
 
   <script>
-    function showSection(id) {
-      document.querySelectorAll('.content-area').forEach(el => el.classList.remove('active'));
+    function switchTab(id) {
+      document.querySelectorAll('.view-content').forEach(v => v.classList.remove('active'));
       document.getElementById(id).classList.add('active');
-      document.getElementById('page-title').innerText = '# ' + id.toUpperCase();
+      document.getElementById('path-text').innerText = '/' + id.toUpperCase();
     }
 
-    function openModal() { document.getElementById('createModal').style.display = 'flex'; }
-    function closeModal() { document.getElementById('createModal').style.display = 'none'; }
-
-    function createCommunity() {
-      const name = document.getElementById('commName').value;
-      if(name) {
-        alert("Community Created: " + name + "\nSecuring channels...");
-        closeModal();
-      }
+    function openCreate() { document.getElementById('modal').style.display = 'flex'; }
+    function closeCreate() { document.getElementById('modal').style.display = 'none'; }
+    function submitCreate() {
+      const name = document.getElementById('nodeName').value;
+      if(name) { alert('Protocol Initiated for: ' + name); closeCreate(); }
     }
   </script>
 
