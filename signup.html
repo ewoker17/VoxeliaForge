@@ -178,6 +178,7 @@ body::after {
 <body>
 
 <div class="container">
+
   <div class="title">VOXELIAFORGE</div>
 
   <!-- LOGIN -->
@@ -227,70 +228,11 @@ body::after {
       Already have one? <button onclick="showLogin()">Sign in</button>
     </div>
   </div>
+
 </div>
 
-<script type="module">
-let auth, createUserWithEmailAndPassword, signInWithEmailAndPassword;
-
-async function loadFirebase() {
-  if (auth) return;
-
-  const app = await import("https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js");
-  const a = await import("https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js");
-
-  const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "voxeliaforge-v589m.firebaseapp.com",
-    projectId: "voxeliaforge-v589m"
-  };
-
-  const appInit = app.initializeApp(firebaseConfig);
-
-  auth = a.getAuth(appInit);
-  createUserWithEmailAndPassword = a.createUserWithEmailAndPassword;
-  signInWithEmailAndPassword = a.signInWithEmailAndPassword;
-}
-
-window.login = async () => {
-  await loadFirebase();
-  try {
-    await signInWithEmailAndPassword(
-      auth,
-      email.value,
-      password.value
-    );
-    alert("Access granted");
-    window.location.href = "index.html";
-  } catch (e) {
-    alert(e.message);
-  }
-};
-
-window.signup = async () => {
-  await loadFirebase();
-  try {
-    await createUserWithEmailAndPassword(
-      auth,
-      newEmail.value,
-      newPassword.value
-    );
-    alert("Account created");
-    showLogin();
-  } catch (e) {
-    alert(e.message);
-  }
-};
-
-window.showSignup = () => {
-  loginBox.style.display = "none";
-  signupBox.style.display = "block";
-};
-
-window.showLogin = () => {
-  signupBox.style.display = "none";
-  loginBox.style.display = "block";
-};
-</script>
+<!-- ✅ FIREBASE / LOGIC FILE -->
+<script type="module" src="app.js"></script>
 
 </body>
 </html>
