@@ -25,29 +25,28 @@ body {
   color:white;
 }
 
-/* glowing background */
-body::before {
+body::before, body::after {
   content:"";
   position:absolute;
+  filter:blur(40px);
+  animation:float 6s infinite ease-in-out;
+}
+
+body::before {
   width:600px;
   height:600px;
   background:radial-gradient(circle, rgba(125,249,255,0.15), transparent 60%);
   top:-150px;
   left:-150px;
-  filter:blur(40px);
-  animation:float 6s infinite ease-in-out;
 }
 
 body::after {
-  content:"";
-  position:absolute;
   width:500px;
   height:500px;
   background:radial-gradient(circle, rgba(255,0,200,0.08), transparent 60%);
   bottom:-150px;
   right:-150px;
-  filter:blur(50px);
-  animation:float 8s infinite ease-in-out;
+  animation-duration:8s;
 }
 
 @keyframes float {
@@ -68,7 +67,6 @@ body::after {
   z-index:1;
 }
 
-/* title */
 .title {
   text-align:center;
   font-size:22px;
@@ -77,7 +75,6 @@ body::after {
   color:#7df9ff;
 }
 
-/* input box */
 .input {
   display:flex;
   align-items:center;
@@ -87,12 +84,10 @@ body::after {
   border-radius:10px;
   background:rgba(255,255,255,0.03);
   border:1px solid rgba(255,255,255,0.1);
-  transition:0.3s;
 }
 
 .input:hover {
   border-color:#7df9ff;
-  box-shadow:0 0 10px rgba(125,249,255,0.2);
 }
 
 .input i {
@@ -107,7 +102,6 @@ body::after {
   outline:none;
 }
 
-/* buttons */
 .btn {
   width:100%;
   padding:12px;
@@ -117,15 +111,8 @@ body::after {
   color:black;
   font-weight:600;
   cursor:pointer;
-  transition:0.3s;
 }
 
-.btn:hover {
-  transform:scale(1.03);
-  box-shadow:0 0 20px rgba(125,249,255,0.4);
-}
-
-/* toggle text */
 .switch {
   text-align:center;
   margin-top:15px;
@@ -140,7 +127,6 @@ body::after {
   cursor:pointer;
 }
 
-/* icons */
 .icons {
   display:flex;
   justify-content:center;
@@ -151,15 +137,8 @@ body::after {
 .icons i {
   font-size:22px;
   cursor:pointer;
-  transition:0.3s;
 }
 
-.icons i:hover {
-  color:#7df9ff;
-  transform:scale(1.2);
-}
-
-/* glow border animation */
 .container::before {
   content:"";
   position:absolute;
@@ -195,11 +174,6 @@ body::after {
 
     <button class="btn" onclick="login()">Access Portal</button>
 
-    <div class="icons">
-      <i class="ri-google-fill"></i>
-      <i class="ri-github-fill"></i>
-    </div>
-
     <div class="switch">
       No account? <button onclick="showSignup()">Create one</button>
     </div>
@@ -231,7 +205,7 @@ body::after {
 
 </div>
 
-<!-- ✅ FIREBASE / LOGIC FILE -->
+<!-- Firebase logic -->
 <script type="module" src="app.js"></script>
 
 </body>
