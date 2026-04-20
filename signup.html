@@ -1,161 +1,296 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VoxeliaForge | Create Identity</title>
-  <link href="https://jsdelivr.net" rel="stylesheet">
-  <style>
-    @import url("https://googleapis.com");
-    :root {
-      --white-color: hsl(0,0%,100%);
-      --black-color: hsl(230, 15%, 5%);
-      --body-font: "Poppins", sans-serif; 
-      --h1-font-size: 1.75rem;
-      --normal-font-size: 1rem;
-      --small-font-size: .813rem;
-      --font-medium: 500; 
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VoxeliaForge | Access Portal</title>
 
-    * { box-sizing: border-box; padding: 0; margin: 0; }
-    body, input, button { font-size: var(--normal-font-size); font-family: var(--body-font); }
-    body { color: var(--white-color); background-color: var(--black-color); }
-    input, button { border: none; outline: none; }
-    a { text-decoration: none; }
+<link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-    .login { position: relative; height: 100vh; display: grid; align-items: center; overflow: hidden; }
-    .login__img { position: absolute; width: 100%; height: 100%; object-fit: cover; object-position: center; z-index: -1; opacity: 0.5; }
-    
-    .login__form {
-      position: relative;
-      background-color: hsla(0, 0%, 10%, 0.5);
-      border: 2px solid var(--white-color);
-      margin-inline: 1.5rem;
-      padding: 2rem 1.5rem;
-      border-radius: 1rem;
-      backdrop-filter: blur(12px);
-    }
+<style>
+* {
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Poppins,sans-serif;
+}
 
-    .login__title { text-align: center; font-size: var(--h1-font-size); font-weight: var(--font-medium); margin-bottom: 2rem; text-transform: uppercase; letter-spacing: 2px;}
-    .login__content, .login__box { display: grid; }
-    .login__content { row-gap: 1.5rem; margin-bottom: 1.5rem; }
-    .login__box { grid-template-columns: max-content 1fr; align-items: center; column-gap: 0.75rem; border-bottom: 2px solid var(--white-color); }
-    .login__icon, .login__eye { font-size: 1.25rem; }
-    .login__input { width: 100%; padding-block: 0.8rem; background: none; color: var(--white-color); position: relative; z-index: 1; }
-    .login__box-input { position: relative; width: 100%; }
-    .login__label { position: absolute; left: 0; top: 13px; font-weight: var(--font-medium); transition: top 0.3s, font-size 0.3s; pointer-events: none; }
-    .login__eye { position: absolute; right: 0; top: 18px; z-index: 10; cursor: pointer; }
+body {
+  height:100vh;
+  overflow:hidden;
+  display:grid;
+  place-items:center;
+  background:#05060a;
+  color:white;
+}
 
-    .login__input:focus + .login__label,
-    .login__input:not(:placeholder-shown) + .login__label { 
-      top: -12px; 
-      font-size: var(--small-font-size); 
-      color: #7df9ff; 
-    }
+/* glowing background */
+body::before {
+  content:"";
+  position:absolute;
+  width:600px;
+  height:600px;
+  background:radial-gradient(circle, rgba(125,249,255,0.15), transparent 60%);
+  top:-150px;
+  left:-150px;
+  filter:blur(40px);
+  animation:float 6s infinite ease-in-out;
+}
 
-    .login__button { width: 100%; padding: 1rem; border-radius: 0.5rem; background-color: var(--white-color); font-weight: var(--font-medium); cursor: pointer; margin-top: 1rem; margin-bottom: 1rem; transition: .3s; }
-    .login__button:hover { background-color: #7df9ff; box-shadow: 0 0 15px rgba(125, 249, 255, 0.4); }
+body::after {
+  content:"";
+  position:absolute;
+  width:500px;
+  height:500px;
+  background:radial-gradient(circle, rgba(255,0,200,0.08), transparent 60%);
+  bottom:-150px;
+  right:-150px;
+  filter:blur(50px);
+  animation:float 8s infinite ease-in-out;
+}
 
-    .login__register { text-align: center; font-size: var(--small-font-size); }
-    .login__register a { color: #7df9ff; font-weight: var(--font-medium); }
+@keyframes float {
+  0%,100% { transform:translateY(0); }
+  50% { transform:translateY(20px); }
+}
 
-    @media screen and (min-width: 576px) {
-      .login { justify-content: center; }
-      .login__form { width: 432px; padding: 3rem; }
-    }
-  </style>
+.container {
+  width:90%;
+  max-width:420px;
+  padding:30px;
+  border-radius:16px;
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(125,249,255,0.25);
+  backdrop-filter:blur(18px);
+  box-shadow:0 0 40px rgba(0,0,0,0.6);
+  position:relative;
+  z-index:1;
+}
+
+/* title */
+.title {
+  text-align:center;
+  font-size:22px;
+  letter-spacing:2px;
+  margin-bottom:20px;
+  color:#7df9ff;
+}
+
+/* input box */
+.input {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:12px;
+  margin-bottom:15px;
+  border-radius:10px;
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.1);
+  transition:0.3s;
+}
+
+.input:hover {
+  border-color:#7df9ff;
+  box-shadow:0 0 10px rgba(125,249,255,0.2);
+}
+
+.input i {
+  color:#7df9ff;
+}
+
+.input input {
+  width:100%;
+  background:transparent;
+  border:none;
+  color:white;
+  outline:none;
+}
+
+/* buttons */
+.btn {
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:10px;
+  background:linear-gradient(90deg,#7df9ff,#6c63ff);
+  color:black;
+  font-weight:600;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.btn:hover {
+  transform:scale(1.03);
+  box-shadow:0 0 20px rgba(125,249,255,0.4);
+}
+
+/* toggle text */
+.switch {
+  text-align:center;
+  margin-top:15px;
+  font-size:13px;
+  color:#aaa;
+}
+
+.switch button {
+  background:none;
+  border:none;
+  color:#7df9ff;
+  cursor:pointer;
+}
+
+/* icons */
+.icons {
+  display:flex;
+  justify-content:center;
+  gap:20px;
+  margin-top:15px;
+}
+
+.icons i {
+  font-size:22px;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.icons i:hover {
+  color:#7df9ff;
+  transform:scale(1.2);
+}
+
+/* glow border animation */
+.container::before {
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:16px;
+  padding:1px;
+  background:linear-gradient(45deg,#7df9ff,transparent,#6c63ff);
+  -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;
+  pointer-events:none;
+  opacity:0.6;
+}
+</style>
 </head>
+
 <body>
-  <div class="login">
-    <img src="login-bg.png" alt="" class="login__img">
 
-    <form id="signupForm" class="login__form">
-      <h1 class="login__title">Register</h1>
+<div class="container">
+  <div class="title">VOXELIAFORGE</div>
 
-      <div class="login__content">
-        <!-- Email Input -->
-        <div class="login__box">
-          <i class="ri-mail-line login__icon"></i>
-          <div class="login__box-input">
-            <input type="email" id="email" required class="login__input" placeholder=" ">
-            <label class="login__label">Email</label>
-          </div>
-        </div>
+  <!-- LOGIN -->
+  <div id="loginBox">
+    <div class="input">
+      <i class="ri-mail-line"></i>
+      <input id="email" placeholder="Email">
+    </div>
 
-        <!-- Password Input -->
-        <div class="login__box">
-          <i class="ri-lock-2-line login__icon"></i>
-          <div class="login__box-input">
-            <input type="password" id="password" required class="login__input" placeholder=" ">
-            <label class="login__label">Password</label>
-            <i class="ri-eye-off-line login__eye" id="signup-eye"></i>
-          </div>
-        </div>
+    <div class="input">
+      <i class="ri-lock-line"></i>
+      <input id="password" type="password" placeholder="Password">
+    </div>
 
-        <!-- Confirm Password -->
-        <div class="login__box">
-          <i class="ri-shield-check-line login__icon"></i>
-          <div class="login__box-input">
-            <input type="password" id="confirmPassword" required class="login__input" placeholder=" ">
-            <label class="login__label">Confirm Password</label>
-          </div>
-        </div>
-      </div>
+    <button class="btn" onclick="login()">Access Portal</button>
 
-      <button type="submit" class="login__button">Create Account</button>
-      
-      <p class="login__register">
-        Already have an account? <a href="login.html">Login</a>
-      </p>
-    </form>
+    <div class="icons">
+      <i class="ri-google-fill"></i>
+      <i class="ri-github-fill"></i>
+    </div>
+
+    <div class="switch">
+      No account? <button onclick="showSignup()">Create one</button>
+    </div>
   </div>
 
-  <script type="module">
-    import { initializeApp } from "https://gstatic.com";
-    import { getAuth, createUserWithEmailAndPassword } from "https://gstatic.com";
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
+  <!-- SIGNUP -->
+  <div id="signupBox" style="display:none;">
+    <div class="input">
+      <i class="ri-user-line"></i>
+      <input id="name" placeholder="Username">
+    </div>
 
-    const firebaseConfig = {
-    apiKey: "AIzaSyDyNeuKeRalGTilS76hdUYRDilF0CFKWrM",
+    <div class="input">
+      <i class="ri-mail-line"></i>
+      <input id="newEmail" placeholder="Email">
+    </div>
+
+    <div class="input">
+      <i class="ri-lock-line"></i>
+      <input id="newPassword" type="password" placeholder="Password">
+    </div>
+
+    <button class="btn" onclick="signup()">Create Account</button>
+
+    <div class="switch">
+      Already have one? <button onclick="showLogin()">Sign in</button>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+let auth, createUserWithEmailAndPassword, signInWithEmailAndPassword;
+
+async function loadFirebase() {
+  if (auth) return;
+
+  const app = await import("https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js");
+  const a = await import("https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js");
+
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
     authDomain: "voxeliaforge-v589m.firebaseapp.com",
-    projectId: "voxeliaforge-v589m",
-    storageBucket: "voxeliaforge-v589m.firebasestorage.app",
-    messagingSenderId: "300204829415",
-    appId: "1:300204829415:web:c73f00c6eaaa03c5669042"
+    projectId: "voxeliaforge-v589m"
   };
 
-  // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
+  const appInit = app.initializeApp(firebaseConfig);
 
-    document.getElementById('signupForm').addEventListener('submit', (e) => {
-      e.preventDefault();
-      const email = document.getElementById('email').value;
-      const pass = document.getElementById('password').value;
-      const confirmPass = document.getElementById('confirmPassword').value;
+  auth = a.getAuth(appInit);
+  createUserWithEmailAndPassword = a.createUserWithEmailAndPassword;
+  signInWithEmailAndPassword = a.signInWithEmailAndPassword;
+}
 
-      if(pass !== confirmPass) {
-        alert("Passwords do not match!");
-        return;
-      }
+window.login = async () => {
+  await loadFirebase();
+  try {
+    await signInWithEmailAndPassword(
+      auth,
+      email.value,
+      password.value
+    );
+    alert("Access granted");
+    window.location.href = "index.html";
+  } catch (e) {
+    alert(e.message);
+  }
+};
 
-      createUserWithEmailAndPassword(auth, email, pass)
-        .then(() => window.location.href = "index.html")
-        .catch(err => alert(err.message));
-    });
+window.signup = async () => {
+  await loadFirebase();
+  try {
+    await createUserWithEmailAndPassword(
+      auth,
+      newEmail.value,
+      newPassword.value
+    );
+    alert("Account created");
+    showLogin();
+  } catch (e) {
+    alert(e.message);
+  }
+};
 
-    // Password Toggle
-    document.getElementById('signup-eye').addEventListener('click', function() {
-      const passInput = document.getElementById('password');
-      const confirmInput = document.getElementById('confirmPassword');
-      const type = passInput.type === 'password' ? 'text' : 'password';
-      
-      passInput.type = type;
-      confirmInput.type = type;
-      
-      this.classList.toggle('ri-eye-off-line');
-      this.classList.toggle('ri-eye-line');
-    });
-  </script>
+window.showSignup = () => {
+  loginBox.style.display = "none";
+  signupBox.style.display = "block";
+};
+
+window.showLogin = () => {
+  signupBox.style.display = "none";
+  loginBox.style.display = "block";
+};
+</script>
+
 </body>
 </html>
