@@ -3,192 +3,306 @@
 <head>
   <meta charset="UTF-8">
   <title>VoxeliaForge</title>
+
   <style>
     :root {
-      --vault-black: #060608; --vault-dark: #0d0e12; --vault-panel: rgba(20, 22, 28, 0.8);
-      --neon-cyan: #7df9ff; --neon-glow: rgba(125, 249, 255, 0.3);
-      --text-main: #e0e0e0; --text-dim: #808090; --border-style: 1px solid rgba(125, 249, 255, 0.15);
+      --vault-black: #060608;
+      --vault-dark: #0d0e12;
+      --vault-panel: rgba(20, 22, 28, 0.8);
+      --neon-cyan: #7df9ff;
+      --neon-glow: rgba(125, 249, 255, 0.3);
+      --text-main: #e0e0e0;
+      --text-dim: #808090;
+      --border-style: 1px solid rgba(125, 249, 255, 0.15);
     }
-    body { margin: 0; font-family: 'Inter', sans-serif; background: var(--vault-black); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
-    .nav-pillar { width: 64px; background: var(--vault-dark); display: flex; flex-direction: column; align-items: center; padding-top: 20px; border-right: var(--border-style); gap: 15px; }
-    .nav-box { width: 42px; height: 42px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; font-weight: 900; color: var(--text-dim); }
-    .nav-box:hover, .nav-box.active { border-color: var(--neon-cyan); color: var(--neon-cyan); box-shadow: 0 0 10px var(--neon-glow); }
-    .sub-panel { width: 260px; background: var(--vault-panel); backdrop-filter: blur(10px); display: flex; flex-direction: column; border-right: var(--border-style); }
-    .panel-header { padding: 20px; font-size: 11px; letter-spacing: 2px; color: var(--neon-cyan); text-transform: uppercase; font-weight: 800; border-bottom: var(--border-style); }
-    .menu-item { padding: 12px 20px; margin: 4px 10px; color: var(--text-dim); cursor: pointer; font-size: 14px; }
-    .menu-item:hover { background: rgba(125, 249, 255, 0.05); color: white; }
-    .user-card { margin-top: auto; padding: 15px; background: rgba(0,0,0,0.3); border-top: var(--border-style); display: flex; align-items: center; gap: 12px; }
-    .avatar-square { width: 36px; height: 36px; background: #1a1a1a; border: 1px solid var(--neon-cyan); display: flex; align-items: center; justify-content: center; font-weight: bold; }
-    .u-name { font-weight: bold; font-size: 12px; display: block; overflow: hidden; text-overflow: ellipsis; }
-    .u-status { font-size: 10px; color: #ff3e3e; text-transform: uppercase; display: block; }
-    .viewport { flex: 1; display: flex; flex-direction: column; background: radial-gradient(circle at top left, #0f1117, #060608); }
-    .view-header { height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 30px; border-bottom: var(--border-style); }
-    .view-content { padding: 40px; display: none; }
-    .view-content.active { display: block; }
-    .btn-neon { background: transparent; border: 1px solid var(--neon-cyan); color: var(--neon-cyan); padding: 10px 20px; font-size: 11px; font-weight: bold; text-transform: uppercase; cursor: pointer; transition: 0.3s; text-decoration: none; display: inline-block; }
-    .btn-neon:hover { background: var(--neon-cyan); color: black; box-shadow: 0 0 15px var(--neon-glow); }
-    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 999; justify-content: center; align-items: center; }
-    .modal-box { background: var(--vault-dark); border: 1px solid var(--neon-cyan); padding: 30px; width: 380px; }
-    .upload-area { width: 80px; height: 80px; border: 1px dashed var(--neon-cyan); margin: 10px auto; display: flex; align-items: center; justify-content: center; font-size: 10px; color: var(--text-dim); cursor: pointer; background-size: cover; }
-    input[type="text"] { width: 100%; background: #000; border: 1px solid #333; padding: 12px; color: white; margin: 15px 0; outline: none; }
-    .invite-box { background: #111; padding: 10px; border: 1px solid #333; color: var(--neon-cyan); font-family: monospace; font-size: 11px; }
-    #server-list-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; margin-top: 20px; }
-    .server-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 15px; text-align: center; font-size: 12px; }
-    .server-card img { width: 50px; height: 50px; display: block; margin: 0 auto 10px; border-radius: 4px; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: var(--vault-black);
+      color: var(--text-main);
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .nav-pillar {
+      width: 64px;
+      background: var(--vault-dark);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 20px;
+      border-right: var(--border-style);
+      gap: 15px;
+    }
+
+    .nav-box {
+      width: 42px;
+      height: 42px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-weight: 900;
+      color: var(--text-dim);
+    }
+
+    .nav-box:hover, .nav-box.active {
+      border-color: var(--neon-cyan);
+      color: var(--neon-cyan);
+    }
+
+    .sub-panel {
+      width: 260px;
+      background: var(--vault-panel);
+      display: flex;
+      flex-direction: column;
+      border-right: var(--border-style);
+    }
+
+    .panel-header {
+      padding: 20px;
+      font-size: 11px;
+      color: var(--neon-cyan);
+      border-bottom: var(--border-style);
+    }
+
+    .menu-item {
+      padding: 12px 20px;
+      cursor: pointer;
+      color: var(--text-dim);
+    }
+
+    .menu-item:hover {
+      color: white;
+    }
+
+    .user-card {
+      margin-top: auto;
+      padding: 15px;
+      border-top: var(--border-style);
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .avatar-square {
+      width: 36px;
+      height: 36px;
+      border: 1px solid var(--neon-cyan);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .viewport {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .view-content {
+      display: none;
+      padding: 40px;
+    }
+
+    .view-content.active {
+      display: block;
+    }
+
+    .btn-neon {
+      border: 1px solid var(--neon-cyan);
+      color: var(--neon-cyan);
+      background: transparent;
+      padding: 10px 15px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-neon:hover {
+      background: var(--neon-cyan);
+      color: black;
+    }
+
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.9);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-box {
+      background: #111;
+      padding: 20px;
+      width: 350px;
+      border: 1px solid var(--neon-cyan);
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      background: black;
+      color: white;
+      border: 1px solid #333;
+    }
+
+    .server-card {
+      background: #111;
+      padding: 10px;
+      border: 1px solid #333;
+      text-align: center;
+    }
+
+    .server-card img {
+      width: 50px;
+      height: 50px;
+      object-fit: cover;
+      display: block;
+      margin: 0 auto 5px;
+    }
   </style>
 </head>
+
 <body>
-  <nav class="nav-pillar">
-    <div class="nav-box active" onclick="switchTab('about')">VF</div>
-    <div class="nav-box" onclick="checkAuthAndOpen()">+</div>
-  </nav>
-  <aside class="sub-panel">
-    <div class="panel-header">Forge Navigation</div>
-    <div class="menu-item" onclick="switchTab('about')">/ Root / About</div>
-    <div class="menu-item" onclick="switchTab('communities')">/ Root / Communities</div>
-    <div class="user-card">
-      <div class="avatar-square" id="user-initial">?</div>
-      <div class="user-meta">
-        <span class="u-name" id="user-name">Guest_User</span>
-        <span class="u-status" id="user-status">● Offline</span>
-        <div id="logout-btn" style="display:none; font-size:9px; cursor:pointer; color:gray; margin-top:4px;" onclick="handleLogout()">TERMINATE_SESSION</div>
-      </div>
-    </div>
-  </aside>
-  <main class="viewport">
-    <div class="view-header">
-      <div style="display: flex; align-items: center; gap: 20px;">
-        <img src="logo.png" style="height:30px;" alt="Logo">
-        <div style="color: var(--text-dim); font-size: 14px;">PATH: <span id="path-text" style="color: var(--neon-cyan);">/ABOUT</span></div>
-      </div>
-    </div>
-    <div id="about" class="view-content active">
-      <div style="background:rgba(255,255,255,0.02); border:var(--border-style); padding:40px; max-width:700px;">
-        <h1>VoxeliaForge Protocol</h1>
-        <p>Your secure identity is verified via Firebase cloud infrastructure. Establish permanent nodes below.</p>
-        <div id="auth-buttons" style="margin-top: 20px; display: flex; gap: 10px;">
-          <a href="create.html" class="btn-neon">Access Portal</a>
-          <a href="signup.html" class="btn-neon" style="border-color:white; color:white;">Register ID</a>
-        </div>
-      </div>
-    </div>
-    <div id="communities" class="view-content">
-      <div style="background:rgba(255,255,255,0.02); border:var(--border-style); padding:40px; max-width:700px;">
-        <h2>Established Nodes</h2>
-        <div id="server-list-container"><p style="color: var(--text-dim);">Loading secure nodes...</p></div>
-        <button class="btn-neon" style="margin-top:20px" onclick="checkAuthAndOpen()">Establish New Node</button>
-      </div>
-    </div>
-  </main>
-  <div id="modal" class="modal-overlay">
-    <div class="modal-box">
-      <h3 style="margin:0">NEW_NODE_REQUEST</h3>
-      <div class="upload-area" id="pfp-preview" onclick="document.getElementById('pfp-input').click()">UPLOAD_PFP</div>
-      <input type="file" id="pfp-input" hidden accept="image/*" onchange="previewImage(this)">
-      <input type="text" id="nodeName" placeholder="Node Name Identifier...">
-      <div id="result-area" style="display:none;">
-        <div class="invite-box" id="invite-link"></div>
-      </div>
-      <div style="text-align: right; margin-top: 20px;">
-        <button class="btn-neon" style="border:none" onclick="closeCreate()">Abort</button>
-        <button class="btn-neon" id="confirm-btn" onclick="submitCreate()">Confirm</button>
-      </div>
+
+<nav class="nav-pillar">
+  <div class="nav-box" onclick="switchTab('about')">VF</div>
+  <div class="nav-box" onclick="checkAuthAndOpen()">+</div>
+</nav>
+
+<aside class="sub-panel">
+  <div class="panel-header">VoxeliaForge</div>
+
+  <div class="menu-item" onclick="switchTab('about')">About</div>
+  <div class="menu-item" onclick="switchTab('communities')">Communities</div>
+
+  <div class="user-card">
+    <div class="avatar-square" id="user-initial">?</div>
+    <div>
+      <div id="user-name">Guest</div>
+      <div id="user-status">Offline</div>
+      <div id="logout-btn" onclick="handleLogout()" style="display:none;cursor:pointer;font-size:10px;">Logout</div>
     </div>
   </div>
+</aside>
 
-  <script type="module">
-    import { initializeApp } from "https://gstatic.com";
-    import { getAuth, onAuthStateChanged, signOut } from "https://gstatic.com";
-    import { getFirestore, collection, addDoc, onSnapshot, query, orderBy } from "https://gstatic.com";
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
+<main class="viewport">
 
-    const firebaseConfig = {
-    apiKey: "AIzaSyDyNeuKeRalGTilS76hdUYRDilF0CFKWrM",
-    authDomain: "voxeliaforge-v589m.firebaseapp.com",
-    projectId: "voxeliaforge-v589m",
-    storageBucket: "voxeliaforge-v589m.firebasestorage.app",
-    messagingSenderId: "300204829415",
-    appId: "1:300204829415:web:c73f00c6eaaa03c5669042"
-  };
+  <div id="about" class="view-content active">
+    <h1>VoxeliaForge</h1>
+    <a class="btn-neon" href="login.html">Login</a>
+    <a class="btn-neon" href="signup.html">Signup</a>
+  </div>
 
-  // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
+  <div id="communities" class="view-content">
+    <h2>Communities</h2>
+    <div id="server-list-container"></div>
+    <button class="btn-neon" onclick="checkAuthAndOpen()">Create</button>
+  </div>
 
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        window.userIsAuthenticated = true;
-        const name = user.displayName || user.email.split('@')[0];
-        document.getElementById('user-name').innerText = name;
-        document.getElementById('user-initial').innerText = name.charAt(0).toUpperCase();
-        document.getElementById('user-status').innerText = "● Encrypted";
-        document.getElementById('user-status').style.color = "#00ff88";
-        document.getElementById('auth-buttons').style.display = 'none';
-        document.getElementById('logout-btn').style.display = 'block';
-        loadCommunities();
-      } else {
-        window.userIsAuthenticated = false;
-      }
+</main>
+
+<div id="modal" class="modal-overlay">
+  <div class="modal-box">
+    <h3>Create Node</h3>
+    <input id="nodeName" placeholder="Node name">
+    <button onclick="submitCreate()" class="btn-neon">Create</button>
+    <button onclick="closeCreate()" class="btn-neon">Close</button>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+import { getFirestore, collection, addDoc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "voxeliaforge-v589m.firebaseapp.com",
+  projectId: "voxeliaforge-v589m",
+  storageBucket: "voxeliaforge-v589m.appspot.com",
+  messagingSenderId: "300204829415",
+  appId: "1:300204829415:web:c73f00c6eaaa03c5669042"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+window.userIsAuthenticated = false;
+
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    window.userIsAuthenticated = true;
+    document.getElementById("user-name").innerText = user.email;
+    document.getElementById("user-status").innerText = "Online";
+    document.getElementById("logout-btn").style.display = "block";
+    loadCommunities();
+  }
+});
+
+window.handleLogout = () => signOut(auth);
+
+function loadCommunities() {
+  const q = query(collection(db, "communities"), orderBy("timestamp", "desc"));
+
+  onSnapshot(q, (snap) => {
+    const container = document.getElementById("server-list-container");
+    container.innerHTML = "";
+
+    snap.forEach(doc => {
+      const d = doc.data();
+
+      const div = document.createElement("div");
+      div.className = "server-card";
+
+      div.innerHTML = `
+        <img src="${d.image || 'https://via.placeholder.com/50'}">
+        <div>${d.name}</div>
+      `;
+
+      container.appendChild(div);
     });
+  });
+}
 
-    window.handleLogout = () => signOut(auth).then(() => window.location.reload());
+window.submitCreate = async () => {
+  const name = document.getElementById("nodeName").value;
+  if (!name) return;
 
-    function loadCommunities() {
-      const q = query(collection(db, "communities"), orderBy("timestamp", "desc"));
-      onSnapshot(q, (snapshot) => {
-        const container = document.getElementById('server-list-container');
-        container.innerHTML = "";
-        if (snapshot.empty) container.innerHTML = '<p style="color: var(--text-dim);">No active nodes found.</p>';
-        snapshot.forEach((doc) => {
-          const data = doc.data();
-          const card = document.createElement('div');
-          card.className = 'server-card';
-          card.innerHTML = `<img src="${data.image || ''}">${data.name}`;
-          container.appendChild(card);
-        });
-      });
-    }
+  await addDoc(collection(db, "communities"), {
+    name,
+    image: "",
+    timestamp: new Date()
+  });
 
-    window.saveCommunityToFirebase = async (name, image) => {
-      await addDoc(collection(db, "communities"), {
-        name: name,
-        image: image,
-        timestamp: new Date()
-      });
-    }
-  </script>
-  <script>
-    function switchTab(id) {
-      document.querySelectorAll('.view-content').forEach(v => v.classList.remove('active'));
-      document.getElementById(id).classList.add('active');
-      document.getElementById('path-text').innerText = '/' + id.toUpperCase();
-    }
-    function checkAuthAndOpen() {
-      if (!window.userIsAuthenticated) { alert("SECURITY ALERT: Verification Required."); window.location.href="login.html"; return; }
-      document.getElementById('modal').style.display = 'flex';
-    }
-    function closeCreate() { document.getElementById('modal').style.display = 'none'; }
-    let uploadedImage = "";
-    function previewImage(input) {
-      if (input.files && input.files[0]) {
-        const reader = new FileReader();
-        reader.onload = e => {
-          document.getElementById('pfp-preview').style.backgroundImage = `url(${e.target.result})`;
-          document.getElementById('pfp-preview').innerHTML = "";
-          uploadedImage = e.target.result;
-        };
-        reader.readAsDataURL(input.files[0]);
-      }
-    }
-    async function submitCreate() {
-      const name = document.getElementById('nodeName').value;
-      if(!name) return;
-      document.getElementById('invite-link').innerText = `vxf.net/join/${Math.random().toString(36).substring(7)}`;
-      document.getElementById('result-area').style.display = 'block';
-      document.getElementById('confirm-btn').style.display = 'none';
-      await window.saveCommunityToFirebase(name, uploadedImage);
-    }
-  </script>
+  closeCreate();
+};
+
+window.switchTab = (id) => {
+  document.querySelectorAll(".view-content").forEach(v => v.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+};
+
+window.checkAuthAndOpen = () => {
+  if (!window.userIsAuthenticated) {
+    alert("Login required");
+    return;
+  }
+  document.getElementById("modal").style.display = "flex";
+};
+
+window.closeCreate = () => {
+  document.getElementById("modal").style.display = "none";
+};
+</script>
+
 </body>
 </html>
