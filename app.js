@@ -6,6 +6,7 @@ import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.12.0/firebas
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyALPIsVzrncuTj_72VDUJbp9T_ov53sxWw",
   authDomain: "voxeliaforge-web.firebaseapp.com",
